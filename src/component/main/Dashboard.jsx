@@ -89,10 +89,64 @@ function Dashboard() {
   const [picture, setPicture] = useState('')
 
   const manageInputs = () => {
-    if (picture === null || picture === '') {
+    if (fname === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'First name is required.',
+        icon: 'error',
+      });
+    }else if (mname === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Middle name is required.',
+        icon: 'error',
+      });
+    }else if (sname === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Surname is required.',
+        icon: 'error',
+      });
+    }else if (cStat === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Civil status is required.',
+        icon: 'error',
+      });
+    }else if (dob === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Date of birth is required.',
+        icon: 'error',
+      });
+    }else if (cStat === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Validation of ID is required.',
+        icon: 'error',
+      });
+    }else if (nationality === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Validation of ID is required.',
+        icon: 'error',
+      });
+    }else if (address === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Permanent Address is required.',
+        icon: 'error',
+      });
+    }else if (picture === null) {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Please capture a picture.',
+        icon: 'error',
+      });
+    }else if (sign === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Please sign before proceed.',
         icon: 'error',
       });
     } else {
@@ -335,6 +389,11 @@ function Dashboard() {
                                 renderInput={(params) => <TextField {...params} className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400" />}
                               />
                             </LocalizationProvider>
+                          </div>
+
+                          <div className="col-span-6">
+                            <label className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-gray-700">Nationality</label>
+                            <input type="text" className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400" value={nationality} onChange={handleNationality}  />
                           </div>
 
                           <div className="col-span-6">
