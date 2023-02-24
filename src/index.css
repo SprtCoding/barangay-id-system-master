@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .card {
+      background-color: theme('colors.white');
+      border-radius: theme('borderRadius.lg');
+      padding: theme('spacing.7');
+      box-shadow: theme('boxShadow.xl');
+    }
+  }
+
+  @font-face {
+    font-family: "Franklin Gothic";
+    src: local("Franklin Gothic"),
+     url("./fonts/franklin.TTF") format("truetype");
+    font-weight: bold;
+    }
+
+.bg {
+    background: url('./assets/brgyidgreen.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.home {
+    background: url('./assets/brgyidgreen.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.title {
+    font-family: 'Franklin Gothic';
+    text-transform: uppercase;
+    font-style: italic;
+}
+
+.title1 {
+  font-family: 'Franklin Gothic';
+  text-transform: capitalize;
+  font-style: italic;
+}
+
+.logo {
+  width: 60px;
+  height: 40px;
+}
