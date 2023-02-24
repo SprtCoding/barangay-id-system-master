@@ -466,6 +466,11 @@ function Dashboard() {
                                   </div>
                                 </div>
                                 <h2 className='id-title'>Barangay Identification Card</h2>
+                                <div className='flex flex-row p-0 px-5'>
+                                  <div className='card id-pic'>
+
+                                  </div>
+                                </div>
                               </div>
                               
                               {/* <Card sx={{ minWidth: 375, minHeight: 225 }}>
