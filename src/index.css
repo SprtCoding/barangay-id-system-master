@@ -44,7 +44,37 @@
   font-style: italic;
 }
 
+.text-hdr {
+  letter-spacing: 0.2;
+  line-height: 8px;
+  font-style: italic;
+  font-size: 7px;
+  color: white;
+}
+
+.id-title {
+  font-family: 'Franklin Gothic';
+  text-transform: capitalize;
+  font-style: italic;
+  text-align: center;
+  color: green;
+}
+
 .logo {
   width: 60px;
   height: 40px;
+}
+
+.id-card {
+  background: url('./assets/brgyidgreen.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 204.48px;
+  width: 325.44px;
+}
+
+.blgu-logo {
+  width: 50px;
+  height: 50px;
 }

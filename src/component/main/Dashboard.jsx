@@ -20,8 +20,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Webcam from 'react-webcam'
-import { AutoGraph, Clear, Save } from '@mui/icons-material'
+import { Clear, Save } from '@mui/icons-material'
 import SignaturePad from 'react-signature-canvas'
+import blguLogo from '../../assets/blgulogo.png'
 
 const videoConstraints = {
   width: 400,
@@ -87,6 +88,9 @@ function Dashboard() {
     sigCanvas.current.clear()
   }
   const [picture, setPicture] = useState('')
+
+  //modal
+  const [showModal, setShowModal] = useState(false);
 
   const manageInputs = () => {
     if (fname === '' || fname === null) {
@@ -156,11 +160,7 @@ function Dashboard() {
         icon: 'error',
       });
     } else {
-      MySwal.fire({
-        title: <p>Success!</p>,
-        text: dob,
-        icon: 'success',
-      });
+      setShowModal(true)
     }
   }
 
@@ -207,6 +207,7 @@ function Dashboard() {
   const handleNavbar = () => {
     setOpen(!open)
   }
+
   return (
     <div className='flex'>
       <SideNavBar open={open} />
@@ -428,6 +429,75 @@ function Dashboard() {
                       </div>
                     </div>
                   </form>
+
+                  {showModal ? (
+                    <>
+                      <div
+                        className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                      >
+                        <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                          {/*content*/}
+                          <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                            {/*header*/}
+                            <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                              <h3 className="text-xl font-semibold">
+                                Your Generated ID
+                              </h3>
+                              <button
+                                className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                onClick={() => setShowModal(false)}
+                              >
+                                <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                  ×
+                                </span>
+                              </button>
+                            </div>
+                            {/*body*/}
+                            <div className="relative p-6 flex-auto">
+                              
+                              <div className='grid grid-rows-4 card gap-0 id-card p-0'>
+                                <div className='flex flex-row pt-1'>
+                                  <img className='blgu-logo' src={blguLogo} alt='' />
+                                  <div className='flex flex-col p-0 mt-1'>
+                                    <span className='text-hdr'>Rebuplic of the Philippines</span>
+                                    <span className='text-hdr'>Province of Antique</span>
+                                    <span className='text-hdr'>Municipality of Caluya</span>
+                                    <span className='text-hdr'>BARANGAY SEMIRARA</span>
+                                  </div>
+                                </div>
+                                <h2 className='id-title'>Barangay Identification Card</h2>
+                              </div>
+                              
+                              {/* <Card sx={{ minWidth: 375, minHeight: 225 }}>
+                                <CardContent className='id-card'>
+                                  
+                                </CardContent>
+                              </Card> */}
+                            </div>
+                            {/*footer*/}
+                            <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                              <button
+                                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                type="button"
+                                onClick={() => setShowModal(false)}
+                              >
+                                Close
+                              </button>
+                              <button
+                                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                type="button"
+                                onClick={() => setShowModal(false)}
+                              >
+                                Print
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                      </>
+                    ) : null}
+
                 </div>
               </div>
             </div>
