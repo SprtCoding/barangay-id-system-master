@@ -33,52 +33,52 @@ function Dashboard() {
   const { logout } = UserAuth()
   const navigate = useNavigate()
 
-  const [fname, setFName] = useState()
+  const [fname, setFName] = useState('')
   const handleFName = (e) => {
     e.preventDefault()
     setFName(e.target.value)
   }
-  const [mname, setMName] = useState()
+  const [mname, setMName] = useState('')
   const handleMName = (e) => {
     e.preventDefault()
     setMName(e.target.value)
   }
-  const [sname, setSName] = useState()
+  const [sname, setSName] = useState('')
   const handleSName = (e) => {
     e.preventDefault()
     setSName(e.target.value)
   }
-  const [suffix, setSuffix] = useState()
+  const [suffix, setSuffix] = useState('')
   const handleSuffix = (e) => {
     e.preventDefault()
     setSuffix(e.target.value)
   }
   // eslint-disable-next-line no-self-compare, no-mixed-operators
   const [dob, setDOB] = useState(new Date(''))
-  const [cStat, setCStatus] = useState()
-  const [nationality, setNationality] = useState()
+  const [cStat, setCStatus] = useState('')
+  const [nationality, setNationality] = useState('')
   const handleNationality = (e) => {
     e.preventDefault()
     setNationality(e.target.value)
   }
-  const [regNo, setRegNo] = useState()
+  const [regNo, setRegNo] = useState('')
   const handleRegNo = (e) => {
     e.preventDefault()
     setRegNo(e.target.value)
   }
-  const [preNo, setPreNo] = useState()
+  const [preNo, setPreNo] = useState('')
   const handlePreNo = (e) => {
     e.preventDefault()
     setPreNo(e.target.value)
   }
   const [validUntil, setValidition] = useState(new Date(''))
-  const [address, setAddress] = useState()
+  const [address, setAddress] = useState('')
   const handleAddress = (e) => {
     e.preventDefault()
     setAddress(e.target.value)
   }
   const sigCanvas = useRef()
-  const [sign, setSign] = useState()
+  const [sign, setSign] = useState('')
   const saveSign = () => {
     setSign(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"))
   }
@@ -89,61 +89,67 @@ function Dashboard() {
   const [picture, setPicture] = useState('')
 
   const manageInputs = () => {
-    if (fname === null) {
+    if (fname === '' || fname === null) {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'First name is required.',
         icon: 'error',
       });
-    }else if (mname === null) {
+    }else if (mname === '' || mname === null) {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Middle name is required.',
         icon: 'error',
       });
-    }else if (sname === null) {
+    }else if (sname === '' || sname === null) {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Surname is required.',
         icon: 'error',
       });
-    }else if (cStat === null) {
+    }else if (cStat === '' || cStat === null) {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Civil status is required.',
         icon: 'error',
       });
-    }else if (dob === null) {
+    }else if (dob === '' || dob === null) {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Date of birth is required.',
         icon: 'error',
       });
-    }else if (cStat === null) {
+    }else if (regNo === '' || regNo === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Registration Number is required.',
+        icon: 'error',
+      });
+    }else if (validUntil === '' || validUntil === null) {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Validation of ID is required.',
         icon: 'error',
       });
-    }else if (nationality === null) {
+    }else if (nationality === '' || nationality === null) {
       MySwal.fire({
         title: <p>Error!</p>,
-        text: 'Validation of ID is required.',
+        text: 'Nationality is required.',
         icon: 'error',
       });
-    }else if (address === null) {
+    }else if (address === '' || address === null) {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Permanent Address is required.',
         icon: 'error',
       });
-    }else if (picture === null) {
+    }else if (picture === null || picture === '') {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Please capture a picture.',
         icon: 'error',
       });
-    }else if (sign === null) {
+    }else if (sign === null || sign === '') {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Please sign before proceed.',
