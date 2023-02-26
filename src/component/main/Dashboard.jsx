@@ -51,8 +51,21 @@ function Dashboard() {
 
   const { writeUserData } = UserAuth()
 
-  const handleSaveData = async () => {
-    writeUserData(regNo, fname, mname, sname, suffix, cStat, dateOfBirth.toLocaleDateString(), regNo, preNo, validIDUntil.toLocaleDateString(), nationality, address, picture, sign)
+  const handleSaveData = async (e) => {
+    try {
+      await writeUserData(regNo, fname, mname, sname, suffix, cStat, dateOfBirth.toLocaleDateString(), regNo, preNo, validIDUntil.toLocaleDateString(), nationality, address, picture, sign)
+      MySwal.fire({
+        title: <p>Saving</p>,
+        text: 'Data saved successful',
+        icon: 'success',
+      });
+    } catch (e) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: e.message,
+        icon: 'error',
+      });
+    }
   }
 
   function handleAfterPrint() {
@@ -60,10 +73,6 @@ function Dashboard() {
       return;
     }
     window.location.reload();
-  }
-
-  const manageSave = () => {
-    alert('dsadad')
   }
 
   const { logout } = UserAuth()
@@ -466,9 +475,9 @@ function Dashboard() {
                         </div>
                       </div>
                       <div className="grid grid-cols-4 gap-2 bg-gray-50 px-4 py-3 text-right sm:px-6">
-                        <button onClick={manageInputs} type="button" 
+                        <button onClick={manageInputs} type="button"
                           className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Generate ID</button>
-                        <button onClick={handleSaveData} type="button" 
+                        <button onClick={handleSaveData} type="button"
                           className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Save Data</button>
                       </div>
                     </div>
@@ -502,7 +511,7 @@ function Dashboard() {
                                 {/*id front*/}
                                 <div className='flex flex-col p-0 gap-2'>
                                   <h3 className='font-bold'>ID Front</h3>
-                                  <div className='grid grid-rows-8 gap-0 id-card p-0'  ref={idCardRef} id='id-side'>
+                                  <div className='grid grid-rows-8 gap-0 id-card p-0' ref={idCardRef} id='id-side'>
                                     <div className='flex flex-row row-span-1 py-2'>
                                       <img className='blgu-logo' src={blguLogo} alt='' />
                                       <div className='flex flex-col p-0 mt-1'>
@@ -523,7 +532,7 @@ function Dashboard() {
                                           <p className='label-id'>Signature</p>
                                         </div>
                                       </div>
-                                      
+
                                       <div className='flex flex-col p-0 px-2 gap-1 gap-y-0 col-span-7'>
                                         <div className='flex flex-row p-0 gap-1'>
                                           <p className='label-id'>First Name</p>

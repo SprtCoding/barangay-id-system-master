@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import SideNavBar from "../../navbar/SideNavBar"
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
@@ -10,8 +10,63 @@ import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import LogoutIcon from '@mui/icons-material/Logout'
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import Divider from "@mui/material/Divider"
+import Box from "@mui/material/Box"
+import Stack from "@mui/material/Stack"
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import { getDatabase, ref, onValue } from "firebase/database";
 
 function ListOfIds() {
+
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rows, setRows] = useState([]);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  useEffect(() => {
+    getData()
+  }, []);
+
+  const getData = async () => {
+    const db = getDatabase();
+    const idRef = ref(db, 'barangayResidentID/');
+    onValue(idRef, (snapshot) => {
+      let records = [];
+      snapshot.forEach(childSnapshot => {
+        let keyName = childSnapshot.key;
+        let data = childSnapshot.val()
+        records.push(data)
+      })
+      setRows(records)
+    });
+  }
+
+  const filterData = (v) => {
+    if (v) {
+      setRows([v])
+    } else {
+      getData()
+    }
+  };
 
   const { logout } = UserAuth()
   const navigate = useNavigate()
@@ -65,6 +120,214 @@ function ListOfIds() {
               </IconButton>
             </Toolbar>
           </AppBar>
+          <div className='p-0'>
+            <div className='mt-10 sm:mt-0 w-full'>
+              <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                  component="div"
+                  sx={{ padding: "20px" }}
+                >
+                  List of IDs
+                </Typography>
+                <Divider />
+                <Box height={10} />
+                <Stack direction="row" spacing={2} className="my-2 mb-2">
+                  <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={rows}
+                    sx={{ width: 300 }}
+                    onChange={(e, v) => filterData(v)}
+                    getOptionLabel={(rows) => rows.name || ""}
+                    renderInput={(params) => (
+                      <TextField {...params} size="small" label="Search People" />
+                    )}
+                  />
+                  <Typography
+                    variant="h6"
+                    component="div"
+                    sx={{ flexGrow: 1 }}
+                  ></Typography>
+                </Stack>
+                <Box height={10} />
+                <TableContainer sx={{ maxHeight: 330 }}>
+                  <Table stickyHeader aria-label="sticky table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell
+                          key="left"
+                          style={{ minWidth: '180px' }}
+                        >
+                          First Name
+                        </TableCell>
+                        <TableCell
+                          key="left"
+                          style={{ minWidth: '180px' }}
+                        >
+                          Middle Name
+                        </TableCell>
+                        <TableCell
+                          key="left"
+                          style={{ minWidth: '180px' }}
+                        >
+                          Surname
+                        </TableCell>
+                        <TableCell
+                          key="left"
+                          style={{ minWidth: '180px' }}
+                        >
+                          Suffix
+                        </TableCell>
+                        <TableCell
+                          key="left"
+                          style={{ minWidth: '180px' }}
+                        >
+                          Civil Status
+                        </TableCell>
+                        <TableCell
+                          key="left"
+                          style={{ minWidth: '180px' }}
+                        >
+                          Date of Birth
+                        </TableCell>
+                        <TableCell
+                          key="left"
+                          style={{ minWidth: '180px' }}
+                        >
+                          Registration Number
+                        </TableCell>
+                        <TableCell
+                          key="left"
+                          style={{ minWidth: '180px' }}
+                        >
+                          Precinct Number
+                        </TableCell>
+                        <TableCell
+                          key="left"
+                          style={{ minWidth: '180px' }}
+                        >
+                          Valid Until
+                        </TableCell>
+                        <TableCell
+                          key="left"
+                          style={{ minWidth: '180px' }}
+                        >
+                          Nationality
+                        </TableCell>
+                        <TableCell
+                          key="left"
+                          style={{ minWidth: '180px' }}
+                        >
+                          Address
+                        </TableCell>
+                        <TableCell
+                          key="left"
+                          style={{ minWidth: '180px' }}
+                        >
+                          Photo
+                        </TableCell>
+                        <TableCell
+                          key="left"
+                          style={{ minWidth: '180px' }}
+                        >
+                          Signature
+                        </TableCell>
+                        <TableCell
+                          key="left"
+                          style={{ minWidth: '180px' }}
+                        >
+                          Action
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {rows
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((row) => {
+                          return (
+                            <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                              <TableCell key={row.ID} align="left">
+                                {row.FirstName}
+                              </TableCell>
+                              <TableCell key={row.ID} align="left">
+                                {row.MiddleName}
+                              </TableCell>
+                              <TableCell key={row.ID} align="left">
+                                {row.Surname}
+                              </TableCell>
+                              <TableCell key={row.ID} align="left">
+                                {row.Suffix}
+                              </TableCell>
+                              <TableCell key={row.ID} align="left">
+                                {row.CivilStatus}
+                              </TableCell>
+                              <TableCell key={row.ID} align="left">
+                                {row.DateOfBirth}
+                              </TableCell>
+                              <TableCell key={row.ID} align="left">
+                                {row.RegistrationNumber}
+                              </TableCell>
+                              <TableCell key={row.ID} align="left">
+                                {row.PrecinctNumber}
+                              </TableCell>
+                              <TableCell key={row.ID} align="left">
+                                {row.ValidUntil}
+                              </TableCell>
+                              <TableCell key={row.ID} align="left">
+                                {row.Nationality}
+                              </TableCell>
+                              <TableCell key={row.ID} align="left">
+                                {row.Address}
+                              </TableCell>
+                              <TableCell key={row.ID} align="left">
+                                {row.Photo}
+                              </TableCell>
+                              <TableCell key={row.ID} align="left">
+                                {row.SigniturePhoto}
+                              </TableCell>
+                              <TableCell align="left">
+                                <Stack spacing={2} direction="row">
+                                  <EditIcon
+                                    style={{
+                                      fontSize: "20px",
+                                      color: "blue",
+                                      cursor: "pointer",
+                                    }}
+                                    className="cursor-pointer"
+                                  // onClick={() => editUser(row.id)}
+                                  />
+                                  <DeleteIcon
+                                    style={{
+                                      fontSize: "20px",
+                                      color: "darkred",
+                                      cursor: "pointer",
+                                    }}
+                                    onClick={() => {
+                                      // deleteUser(row.ID);
+                                    }}
+                                  />
+                                </Stack>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                <TablePagination
+                  rowsPerPageOptions={[10, 25, 100]}
+                  component="div"
+                  count={rows.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </Paper>
+            </div>
+          </div>
         </div>
       </main>
     </div>
