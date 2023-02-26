@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react'
+import React, { useState, useRef, useCallback, useEffect } from 'react'
 import SideNavBar from "../../navbar/SideNavBar"
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
@@ -24,6 +24,8 @@ import { Clear, Save } from '@mui/icons-material'
 import SignaturePad from 'react-signature-canvas'
 import blguLogo from '../../assets/blgulogo.png'
 import html2canvas from 'html2canvas'
+import { Button } from '@mui/material'
+// import usbDetect from 'usb-detection';
 
 const videoConstraints = {
   width: 400,
@@ -32,7 +34,33 @@ const videoConstraints = {
 }
 
 function Dashboard() {
+
+  const [openModal, setOpenModal] = useState(false);
+
   const idCardRef = useRef(null);
+
+  const openSigPadModal = () => {
+    setOpenModal(true)
+  }
+
+  // const componentDidMount = () => {
+  //   const vendorId = 1234; // Your signature pad vendor ID
+  //   const productId = 5678; // Your signature pad product ID
+
+  //   require('usb-detection').startMonitoring();
+
+  //   require('usb-detection').on('add', (device) => {
+  //     if (device.vendorId === vendorId && device.productId === productId) {
+  //       idCardRef.clear();
+  //       idCardRef.off();
+  //       idCardRef.on();
+  //     }
+  //   });
+  // }
+
+  // const componentWillUnmount = () => {
+  //   require('usb-detection').stopMonitoring();
+  // }
 
   const handleDownloadIDFront = () => {
     html2canvas(idCardRef.current).then(canvas => {
@@ -51,20 +79,108 @@ function Dashboard() {
 
   const { writeUserData } = UserAuth()
 
+  const clearForm = () => {
+    setFName('')
+    setMName('')
+    setSName('')
+    setSuffix('')
+    setCStatus('')
+    setDOB(null)
+    setRegNo('')
+    setPreNo('')
+    setValidition(null)
+    setNationality('')
+    setAddress('')
+    setPicture(null)
+    setSign(null)
+  }
+
   const handleSaveData = async (e) => {
-    try {
-      await writeUserData(regNo, fname, mname, sname, suffix, cStat, dateOfBirth.toLocaleDateString(), regNo, preNo, validIDUntil.toLocaleDateString(), nationality, address, picture, sign)
-      MySwal.fire({
-        title: <p>Saving</p>,
-        text: 'Data saved successful',
-        icon: 'success',
-      });
-    } catch (e) {
+    if (fname === '' || fname === null) {
       MySwal.fire({
         title: <p>Error!</p>,
-        text: e.message,
+        text: 'First name is required.',
         icon: 'error',
       });
+    } else if (mname === '' || mname === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Middle name is required.',
+        icon: 'error',
+      });
+    } else if (sname === '' || sname === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Surname is required.',
+        icon: 'error',
+      });
+    } else if (cStat === '' || cStat === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Civil status is required.',
+        icon: 'error',
+      });
+    } else if (dob === '' || dob === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Date of birth is required.',
+        icon: 'error',
+      });
+    } else if (regNo === '' || regNo === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Registration Number is required.',
+        icon: 'error',
+      });
+    } else if (validUntil === '' || validUntil === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Validation of ID is required.',
+        icon: 'error',
+      });
+    } else if (nationality === '' || nationality === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Nationality is required.',
+        icon: 'error',
+      });
+    } else if (address === '' || address === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Permanent Address is required.',
+        icon: 'error',
+      });
+    } else if (picture === null || picture === '') {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Please capture a picture.',
+        icon: 'error',
+      });
+    } else if (sign === null || sign === '') {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Please sign before proceed.',
+        icon: 'error',
+      });
+    } else {
+      try {
+        await writeUserData(regNo, fname, mname, sname, suffix, cStat, dateOfBirth.toLocaleDateString(), regNo, preNo, validIDUntil.toLocaleDateString(), nationality, address, picture, sign)
+        MySwal.fire({
+          title: <p>Saving</p>,
+          text: 'Data saved successful',
+          icon: 'success',
+        }).then((result) => {
+          if (result.value) {
+            clearForm();
+          }
+        });
+      } catch (e) {
+        MySwal.fire({
+          title: <p>Error!</p>,
+          text: e.message,
+          icon: 'error',
+        });
+      }
     }
   }
 
@@ -128,7 +244,13 @@ function Dashboard() {
   const [sign, setSign] = useState('')
   const saveSign = () => {
     setSign(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"))
+    setOpenModal(false)
   }
+
+  // useEffect(() => {
+  //   componentDidMount()
+  //   componentWillUnmount()
+  // }, []);
 
   const clear = () => {
     sigCanvas.current.clear()
@@ -332,27 +454,70 @@ function Dashboard() {
                     </div>
                   </div>
                   <div className='flex flex-col justify-center my-4'>
-                    <h5 className='text-base text-center font-semibold pb-2'>Draw Signature Here</h5>
-                    <SignaturePad ref={sigCanvas}
-                      canvasProps={{
-                        className: 'card'
-                      }} />
-                    <div className='grid grid-cols-2'>
-                      <IconButton
-                        onClick={saveSign}
-                        color="gray"
-                        aria-label="logout"
-                        component="label">
-                        <Save />
-                      </IconButton>
-                      <IconButton
-                        onClick={clear}
-                        color="gray"
-                        aria-label="logout"
-                        component="label">
-                        <Clear />
-                      </IconButton>
-                    </div>
+                    <h5 className='text-base text-center font-semibold pb-4'>Draw Signature Here</h5>
+                    {
+                      sign ? (
+                        <>
+                          <img src={sign} alt="signature" className="rounded mt-4 mb-4" />
+                          <Button variant="outlined" onClick={openSigPadModal} color="success">Retake</Button>
+                        </>
+                      ) : (
+                        <>
+                          <Button variant="outlined" onClick={openSigPadModal} color="success">Open Signature Pad</Button>
+                        </>
+                      )
+                    }
+                    {openModal && (
+                      <>
+                        <div
+                          className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                        >
+                          <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                            {/*content*/}
+                            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                              {/*header*/}
+                              <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                                <h3 className="text-xl font-semibold">
+                                  Your Generated ID
+                                </h3>
+                                <button
+                                  className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                  onClick={() => setOpenModal(false)}
+                                >
+                                  <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                    ×
+                                  </span>
+                                </button>
+                              </div>
+                              {/*body*/}
+                              <div className="relative p-6 flex-auto">
+                                <SignaturePad ref={sigCanvas}
+                                  canvasProps={{
+                                    className: "sigCanvas"
+                                  }}
+                                  penColor="black" />
+                                <div className='grid grid-cols-2'>
+                                  <IconButton
+                                    onClick={saveSign}
+                                    color="gray"
+                                    aria-label="save"
+                                    component="label">
+                                    <Save />
+                                  </IconButton>
+                                  <IconButton
+                                    onClick={clear}
+                                    color="gray"
+                                    aria-label="clear"
+                                    component="label">
+                                    <Clear />
+                                  </IconButton>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
                 <div className="mt-2 md:col-span-2 md:mt-0 w-full h-full">
@@ -511,7 +676,7 @@ function Dashboard() {
                                 {/*id front*/}
                                 <div className='flex flex-col p-0 gap-2'>
                                   <h3 className='font-bold'>ID Front</h3>
-                                  <div className='grid grid-rows-8 gap-0 id-card p-0' ref={idCardRef} id='id-side'>
+                                  <div className={`${preNo === '' ? 'id-card-yellow' : 'id-card'} grid grid-rows-8 gap-0 p-0`} ref={idCardRef} id='id-side'>
                                     <div className='flex flex-row row-span-1 py-2'>
                                       <img className='blgu-logo' src={blguLogo} alt='' />
                                       <div className='flex flex-col p-0 mt-1'>

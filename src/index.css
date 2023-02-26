@@ -108,6 +108,15 @@
   width: 345.44px;
 }
 
+.id-card-yellow {
+  background: url('./assets/brgyidyellow.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 224.48px;
+  width: 345.44px;
+}
+
 .id-card-back {
   background: url('./assets/idgreenback.png');
   background-repeat: no-repeat;
@@ -120,4 +129,14 @@
 .blgu-logo {
   width: 45px;
   height: 45px;
+}
+
+.table-photo {
+  width: 150px;
+  height: 70px;
+}
+
+.sigCanvas {
+  width: 100%;
+  height: 200px;
 }

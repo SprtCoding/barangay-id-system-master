@@ -25,7 +25,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue, remove } from "firebase/database";
 
 function ListOfIds() {
 
@@ -46,13 +46,36 @@ function ListOfIds() {
     getData()
   }, []);
 
+  const deleteUser = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.value) {
+        deleteApi(id);
+      }
+    });
+  };
+
+  const deleteApi = async (id) => {
+    const db = getDatabase();
+    await remove(ref(db, 'barangayResidentID/' + id));
+    Swal.fire("Deleted!", "Your file has been deleted.", "success");
+    getData()
+  };
+
   const getData = async () => {
     const db = getDatabase();
     const idRef = ref(db, 'barangayResidentID/');
     onValue(idRef, (snapshot) => {
       let records = [];
       snapshot.forEach(childSnapshot => {
-        let keyName = childSnapshot.key;
+        // let keyName = childSnapshot.key;
         let data = childSnapshot.val()
         records.push(data)
       })
@@ -140,7 +163,7 @@ function ListOfIds() {
                     options={rows}
                     sx={{ width: 300 }}
                     onChange={(e, v) => filterData(v)}
-                    getOptionLabel={(rows) => rows.name || ""}
+                    getOptionLabel={(rows) => rows.FirstName || ""}
                     renderInput={(params) => (
                       <TextField {...params} size="small" label="Search People" />
                     )}
@@ -247,45 +270,45 @@ function ListOfIds() {
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row) => {
                           return (
-                            <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                              <TableCell key={row.ID} align="left">
+                            <TableRow hover role="checkbox" tabIndex={-1} key={row.ID}>
+                              <TableCell align="left">
                                 {row.FirstName}
                               </TableCell>
-                              <TableCell key={row.ID} align="left">
+                              <TableCell align="left">
                                 {row.MiddleName}
                               </TableCell>
-                              <TableCell key={row.ID} align="left">
+                              <TableCell align="left">
                                 {row.Surname}
                               </TableCell>
-                              <TableCell key={row.ID} align="left">
+                              <TableCell align="left">
                                 {row.Suffix}
                               </TableCell>
-                              <TableCell key={row.ID} align="left">
+                              <TableCell align="left">
                                 {row.CivilStatus}
                               </TableCell>
-                              <TableCell key={row.ID} align="left">
+                              <TableCell align="left">
                                 {row.DateOfBirth}
                               </TableCell>
-                              <TableCell key={row.ID} align="left">
+                              <TableCell align="left">
                                 {row.RegistrationNumber}
                               </TableCell>
-                              <TableCell key={row.ID} align="left">
+                              <TableCell align="left">
                                 {row.PrecinctNumber}
                               </TableCell>
-                              <TableCell key={row.ID} align="left">
+                              <TableCell align="left">
                                 {row.ValidUntil}
                               </TableCell>
-                              <TableCell key={row.ID} align="left">
+                              <TableCell align="left">
                                 {row.Nationality}
                               </TableCell>
-                              <TableCell key={row.ID} align="left">
+                              <TableCell align="left">
                                 {row.Address}
                               </TableCell>
-                              <TableCell key={row.ID} align="left">
-                                {row.Photo}
+                              <TableCell align="left">
+                                {<img src={row.Photo} className='table-photo' alt='user-pic' />}
                               </TableCell>
-                              <TableCell key={row.ID} align="left">
-                                {row.SigniturePhoto}
+                              <TableCell align="left">
+                                {<img src={row.SigniturePhoto} className='table-photo' alt='signature' />}
                               </TableCell>
                               <TableCell align="left">
                                 <Stack spacing={2} direction="row">
@@ -305,7 +328,7 @@ function ListOfIds() {
                                       cursor: "pointer",
                                     }}
                                     onClick={() => {
-                                      // deleteUser(row.ID);
+                                      deleteUser(row.ID);
                                     }}
                                   />
                                 </Stack>
