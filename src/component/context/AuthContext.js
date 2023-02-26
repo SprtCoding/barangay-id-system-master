@@ -6,6 +6,7 @@ import {
     onAuthStateChanged } 
     from 'firebase/auth'
 import { auth } from '../../firebase'
+import { getDatabase, ref, set } from "firebase/database"
 
 const UserContext = createContext()
 
@@ -20,6 +21,26 @@ export const AuthContextProvider = ({children}) => {
         return signOut(auth)
     }
 
+    function writeUserData(Id, Fname, Mname, Sname, suffix, cStatus, dob, RegNo, PreNo, validationUntil, nationality, pAddress, UserImageUrl, UserImageSignUrl) {
+      const db = getDatabase();
+      set(ref(db, 'barangayResidentID/' + Id), {
+        ID: Id,
+        FirstName: Fname,
+        MiddleName: Mname,
+        Surname: Sname,
+        Suffix: suffix,
+        CivilStatus: cStatus,
+        DateOfBirth: dob,
+        RegistrationNumber: RegNo,
+        PrecinctNumber: PreNo,
+        ValidUntil: validationUntil,
+        Nationality: nationality,
+        Address: pAddress,
+        Photo: UserImageUrl,
+        SigniturePhoto: UserImageSignUrl
+      });
+    }
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser)
@@ -31,7 +52,7 @@ export const AuthContextProvider = ({children}) => {
     },[])
 
     return (
-        <UserContext.Provider value={{loginUser, user, logout}}>
+        <UserContext.Provider value={{loginUser, user, logout, writeUserData}}>
             {children}
         </UserContext.Provider>
     )

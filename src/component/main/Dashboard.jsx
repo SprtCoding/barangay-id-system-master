@@ -23,6 +23,7 @@ import Webcam from 'react-webcam'
 import { Clear, Save } from '@mui/icons-material'
 import SignaturePad from 'react-signature-canvas'
 import blguLogo from '../../assets/blgulogo.png'
+import html2canvas from 'html2canvas'
 
 const videoConstraints = {
   width: 400,
@@ -31,6 +32,40 @@ const videoConstraints = {
 }
 
 function Dashboard() {
+  const idCardRef = useRef(null);
+
+  const handleDownloadIDFront = () => {
+    html2canvas(idCardRef.current).then(canvas => {
+      const printContent = document.querySelector(`#id-side`).innerHTML;
+      const originalContent = document.body.innerHTML;
+      document.body.innerHTML = printContent;
+      window.print();
+      document.body.innerHTML = originalContent;
+      setTimeout(handleAfterPrint, 1000);
+      // const link = document.createElement('a');
+      // link.download = 'id-card.png';
+      // link.href = canvas.toDataURL();
+      // link.click();
+    });
+  }
+
+  const { writeUserData } = UserAuth()
+
+  const handleSaveData = async () => {
+    writeUserData(regNo, fname, mname, sname, suffix, cStat, dateOfBirth.toLocaleDateString(), regNo, preNo, validIDUntil.toLocaleDateString(), nationality, address, picture, sign)
+  }
+
+  function handleAfterPrint() {
+    if (document.hidden) {
+      return;
+    }
+    window.location.reload();
+  }
+
+  const manageSave = () => {
+    alert('dsadad')
+  }
+
   const { logout } = UserAuth()
   const navigate = useNavigate()
 
@@ -56,6 +91,9 @@ function Dashboard() {
   }
   // eslint-disable-next-line no-self-compare, no-mixed-operators
   const [dob, setDOB] = useState(new Date(''))
+  const [validUntil, setValidition] = useState(new Date(''))
+  const dateOfBirth = new Date(dob);
+  const validIDUntil = new Date(validUntil);
   const [cStat, setCStatus] = useState('')
   const [nationality, setNationality] = useState('')
   const handleNationality = (e) => {
@@ -72,7 +110,6 @@ function Dashboard() {
     e.preventDefault()
     setPreNo(e.target.value)
   }
-  const [validUntil, setValidition] = useState(new Date(''))
   const [address, setAddress] = useState('')
   const handleAddress = (e) => {
     e.preventDefault()
@@ -83,7 +120,7 @@ function Dashboard() {
   const saveSign = () => {
     setSign(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"))
   }
-  
+
   const clear = () => {
     sigCanvas.current.clear()
   }
@@ -99,61 +136,61 @@ function Dashboard() {
         text: 'First name is required.',
         icon: 'error',
       });
-    }else if (mname === '' || mname === null) {
+    } else if (mname === '' || mname === null) {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Middle name is required.',
         icon: 'error',
       });
-    }else if (sname === '' || sname === null) {
+    } else if (sname === '' || sname === null) {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Surname is required.',
         icon: 'error',
       });
-    }else if (cStat === '' || cStat === null) {
+    } else if (cStat === '' || cStat === null) {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Civil status is required.',
         icon: 'error',
       });
-    }else if (dob === '' || dob === null) {
+    } else if (dob === '' || dob === null) {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Date of birth is required.',
         icon: 'error',
       });
-    }else if (regNo === '' || regNo === null) {
+    } else if (regNo === '' || regNo === null) {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Registration Number is required.',
         icon: 'error',
       });
-    }else if (validUntil === '' || validUntil === null) {
+    } else if (validUntil === '' || validUntil === null) {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Validation of ID is required.',
         icon: 'error',
       });
-    }else if (nationality === '' || nationality === null) {
+    } else if (nationality === '' || nationality === null) {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Nationality is required.',
         icon: 'error',
       });
-    }else if (address === '' || address === null) {
+    } else if (address === '' || address === null) {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Permanent Address is required.',
         icon: 'error',
       });
-    }else if (picture === null || picture === '') {
+    } else if (picture === null || picture === '') {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Please capture a picture.',
         icon: 'error',
       });
-    }else if (sign === null || sign === '') {
+    } else if (sign === null || sign === '') {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Please sign before proceed.',
@@ -322,17 +359,17 @@ function Dashboard() {
 
                             <div className="col-span-7 sm:col-span-3 lg:col-span-2">
                               <label className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-gray-700">Middle Name</label>
-                              <input type="text" className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400" value={mname} onChange={handleMName}  />
+                              <input type="text" className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400" value={mname} onChange={handleMName} />
                             </div>
 
                             <div className="col-span-7 sm:col-span-3 lg:col-span-2">
                               <label className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-gray-700">Surname</label>
-                              <input type="text" className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400" value={sname} onChange={handleSName}  />
+                              <input type="text" className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400" value={sname} onChange={handleSName} />
                             </div>
 
                             <div className="col-span-7 sm:col-span-3 lg:col-span-1">
                               <label className="block text-sm font-medium text-gray-700">Suffix</label>
-                              <input type="text" className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400" value={suffix} onChange={handleSuffix}  />
+                              <input type="text" className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400" value={suffix} onChange={handleSuffix} />
                             </div>
                           </div>
 
@@ -370,6 +407,10 @@ function Dashboard() {
                                 onChange={(newValue) => {
                                   setDOB(newValue);
                                 }}
+                                format="yyyy-MM-dd"
+                                inputProps={{
+                                  id: 'date-picker',
+                                }}
                                 renderInput={(params) => <TextField {...params} className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400" />}
                               />
                             </LocalizationProvider>
@@ -377,12 +418,12 @@ function Dashboard() {
 
                           <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                             <label className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-gray-700 pb-4">Registration Number</label>
-                            <input type="text" className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400" value={regNo} onChange={handleRegNo}  />
+                            <input type="text" className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400" value={regNo} onChange={handleRegNo} />
                           </div>
 
                           <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                             <label className="block text-sm font-medium text-gray-700 pb-4">Precinct Number</label>
-                            <input type="text" className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400" value={preNo} onChange={handlePreNo}  />
+                            <input type="text" className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400" value={preNo} onChange={handlePreNo} />
                           </div>
 
                           <div className="col-span-6 sm:col-span-3 lg:col-span-2">
@@ -400,12 +441,12 @@ function Dashboard() {
 
                           <div className="col-span-6">
                             <label className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-gray-700">Nationality</label>
-                            <input type="text" className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400" value={nationality} onChange={handleNationality}  />
+                            <input type="text" className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400" value={nationality} onChange={handleNationality} />
                           </div>
 
                           <div className="col-span-6">
                             <label className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-gray-700">Permanent Address</label>
-                            <input type="text" className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400" value={address} onChange={handleAddress}  />
+                            <input type="text" className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400" value={address} onChange={handleAddress} />
                           </div>
 
                           {/* <div className="col-span-6 sm:col-span-6 lg:col-span-2">
@@ -424,8 +465,11 @@ function Dashboard() {
                           </div> */}
                         </div>
                       </div>
-                      <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
-                        <button onClick={manageInputs} type="button" className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Save</button>
+                      <div className="grid grid-cols-4 gap-2 bg-gray-50 px-4 py-3 text-right sm:px-6">
+                        <button onClick={manageInputs} type="button" 
+                          className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Generate ID</button>
+                        <button onClick={handleSaveData} type="button" 
+                          className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Save Data</button>
                       </div>
                     </div>
                   </form>
@@ -454,30 +498,90 @@ function Dashboard() {
                             </div>
                             {/*body*/}
                             <div className="relative p-6 flex-auto">
-                              
-                              <div className='grid grid-rows-4 card gap-0 id-card p-0'>
-                                <div className='flex flex-row pt-1'>
-                                  <img className='blgu-logo' src={blguLogo} alt='' />
-                                  <div className='flex flex-col p-0 mt-1'>
-                                    <span className='text-hdr'>Rebuplic of the Philippines</span>
-                                    <span className='text-hdr'>Province of Antique</span>
-                                    <span className='text-hdr'>Municipality of Caluya</span>
-                                    <span className='text-hdr'>BARANGAY SEMIRARA</span>
+                              <div className='flex flex-row p-0 gap-4'>
+                                {/*id front*/}
+                                <div className='flex flex-col p-0 gap-2'>
+                                  <h3 className='font-bold'>ID Front</h3>
+                                  <div className='grid grid-rows-8 gap-0 id-card p-0'  ref={idCardRef} id='id-side'>
+                                    <div className='flex flex-row row-span-1 py-2'>
+                                      <img className='blgu-logo' src={blguLogo} alt='' />
+                                      <div className='flex flex-col p-0 mt-1'>
+                                        <span className='text-hdr'>Rebuplic of the Philippines</span>
+                                        <span className='text-hdr'>Province of Antique</span>
+                                        <span className='text-hdr'>Municipality of Caluya</span>
+                                        <span className='text-hdr'>BARANGAY SEMIRARA</span>
+                                      </div>
+                                    </div>
+                                    <h2 className='id-title row-span-2 mb-2'>Barangay Identification Card</h2>
+                                    <div className='grid grid-cols-9 row-span-5 p-0 px-5'>
+                                      <div className='grid grid-rows-4 col-span-2'>
+                                        <div className='card id-pic col-span-1'>
+                                          <img src={picture} alt='' className='id-pic-user' />
+                                        </div>
+                                        <div className='flex flex-col gap-y-1 col-span-3 items-center'>
+                                          <img src={sign} alt='' className='sign-user' />
+                                          <p className='label-id'>Signature</p>
+                                        </div>
+                                      </div>
+                                      
+                                      <div className='flex flex-col p-0 px-2 gap-1 gap-y-0 col-span-7'>
+                                        <div className='flex flex-row p-0 gap-1'>
+                                          <p className='label-id'>First Name</p>
+                                          <p className='label-id'>Middle Name</p>
+                                          <p className='label-id'>Surname</p>
+                                          <p className='label-id'>Suffix</p>
+                                        </div>
+                                        <div className='flex flex-row p-0 gap-1'>
+                                          <p className='label-id-data'>{fname + " " + mname + " " + sname + " " + suffix}</p>
+                                          {/* <p className='label-id-data'>{fname}</p>
+                                          <p className='label-id-data'>{mname}</p>
+                                          <p className='label-id-data'>{sname}</p>
+                                          <p className='label-id-data'>{suffix}</p> */}
+                                        </div>
+                                        {/* <p className='label-id'>{fname + ' ' + mname + ' ' + sname + ' ' + suffix}</p> */}
+                                        {/* 2nd */}
+                                        <div className='flex flex-col p-0 gap-1 gap-y-0'>
+                                          <div className='grid grid-cols-3 p-0'>
+                                            <p className='label-id'>Date of Birth</p>
+                                            <p className='label-id'>Civil Status</p>
+                                            <p className='label-id'>Nationality</p>
+                                          </div>
+                                          <div className='grid grid-cols-3 p-0'>
+                                            <p className='label-id-data'>{dateOfBirth.toLocaleDateString()}</p>
+                                            <p className='label-id-data'>{cStat}</p>
+                                            <p className='label-id-data'>{nationality}</p>
+                                          </div>
+                                        </div>
+                                        {/* 3rd */}
+                                        <div className='flex flex-col p-0 gap-0 gap-y-0'>
+                                          <div className='grid grid-cols-5 p-0'>
+                                            <p className='label-id col-span-2'>Registration Number</p>
+                                            <p className='label-id col-span-2'>Precinct Number</p>
+                                            <p className='label-id col-span-1'>Valid Until</p>
+                                          </div>
+                                          <div className='grid grid-cols-5 p-0'>
+                                            <p className='label-id-data col-span-2'>{regNo}</p>
+                                            <p className='label-id-data col-span-2'>{preNo}</p>
+                                            <p className='label-id-data col-span-1'>{validIDUntil.toLocaleDateString()}</p>
+                                          </div>
+                                        </div>
+                                        {/* 4rd */}
+                                        <div className='flex flex-col p-0 gap-1 gap-y-0'>
+                                          <p className='label-id'>Address</p>
+                                          <p className='label-id-data col-span-2'>{address}</p>
+                                        </div>
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
-                                <h2 className='id-title'>Barangay Identification Card</h2>
-                                <div className='flex flex-row p-0 px-5'>
-                                  <div className='card id-pic'>
+                                {/*id back*/}
+                                <div className='flex flex-col p-0 gap-2'>
+                                  <h3 className='font-bold'>ID Back</h3>
+                                  <div className='grid grid-rows-6 card gap-0 id-card-back p-0'>
 
                                   </div>
                                 </div>
                               </div>
-                              
-                              {/* <Card sx={{ minWidth: 375, minHeight: 225 }}>
-                                <CardContent className='id-card'>
-                                  
-                                </CardContent>
-                              </Card> */}
                             </div>
                             {/*footer*/}
                             <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
@@ -491,17 +595,17 @@ function Dashboard() {
                               <button
                                 className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                 type="button"
-                                onClick={() => setShowModal(false)}
+                                onClick={handleDownloadIDFront}
                               >
-                                Print
+                                Download
                               </button>
                             </div>
                           </div>
                         </div>
                       </div>
                       <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-                      </>
-                    ) : null}
+                    </>
+                  ) : null}
 
                 </div>
               </div>

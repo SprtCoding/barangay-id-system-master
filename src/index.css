@@ -3,39 +3,39 @@
 @tailwind utilities;
 
 @layer components {
-    .card {
-      background-color: theme('colors.white');
-      border-radius: theme('borderRadius.lg');
-      padding: theme('spacing.7');
-      box-shadow: theme('boxShadow.xl');
-    }
+  .card {
+    background-color: theme('colors.white');
+    border-radius: theme('borderRadius.lg');
+    padding: theme('spacing.7');
+    box-shadow: theme('boxShadow.xl');
   }
+}
 
-  @font-face {
-    font-family: "Franklin Gothic";
-    src: local("Franklin Gothic"),
-     url("./fonts/franklin.TTF") format("truetype");
-    font-weight: bold;
-    }
+@font-face {
+  font-family: "Franklin Gothic";
+  src: local("Franklin Gothic"),
+    url("./fonts/franklin.TTF") format("truetype");
+  font-weight: bold;
+}
 
 .bg {
-    background: url('./assets/brgyidgreen.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
+  background: url('./assets/brgyidgreen.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .home {
-    background: url('./assets/brgyidgreen.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
+  background: url('./assets/brgyidgreen.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .title {
-    font-family: 'Franklin Gothic';
-    text-transform: uppercase;
-    font-style: italic;
+  font-family: 'Franklin Gothic';
+  text-transform: uppercase;
+  font-style: italic;
 }
 
 .title1 {
@@ -59,6 +59,21 @@
   text-align: center;
   color: green;
   padding: 0;
+  margin-top: -10px;
+}
+
+.label-id {
+  font-size: 8px;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.label-id-data {
+  font-size: 8px;
+  font-weight: 500;
+  border: none;
+  background: none;
+  outline: none;
 }
 
 .logo {
@@ -67,8 +82,21 @@
 }
 
 .id-pic {
-  width: 70px;
-  height: 70px;
+  padding: 0;
+  width: 65px;
+  height: 65px;
+}
+
+.id-pic-user {
+  border-radius: 5px;
+  width: 65px;
+  height: 65px;
+}
+
+.sign-user {
+  margin-top: 10px;
+  width: 35px;
+  height: 17px;
 }
 
 .id-card {
@@ -76,11 +104,20 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: 204.48px;
-  width: 325.44px;
+  height: 224.48px;
+  width: 345.44px;
+}
+
+.id-card-back {
+  background: url('./assets/idgreenback.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 224.48px;
+  width: 345.44px;
 }
 
 .blgu-logo {
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
 }
