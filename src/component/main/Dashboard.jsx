@@ -71,8 +71,25 @@ function Dashboard() {
   const handlePrintID = () => {
     html2canvas(idCardRef.current).then(canvas => {
       const printContent = document.querySelector(`#id-side`).innerHTML;
+      // const frontCanvas = document.getElementById('id-front')
+      // const backCanvas = document.getElementById('id-back')
       const originalContent = document.body.innerHTML;
       document.body.innerHTML = printContent;
+      // const printWindow = window.open('', 'Print', 'height = 600, width = 800')
+      // printWindow.document.write(`
+      // <html>
+      //   <head>
+      //     <title> Print ID </title>
+      //   </head>
+      //   <body>
+      //     <div>
+      //       <img scr="${frontCanvas.toDataURL()}" />
+      //     </div>
+      //     <div>
+      //       <img scr="${backCanvas.toDataURL()}" />
+      //     </div>
+      //   </body>
+      // </html>`)
       window.print();
       document.body.innerHTML = originalContent;
       setTimeout(handleAfterPrint, 1000);
@@ -717,9 +734,9 @@ function Dashboard() {
                             </div>
                             {/*body*/}
                             <div className="relative p-6 flex-auto">
-                              <div className='flex flex-row p-0 gap-4' ref={idCardRef} id='id-side'>
+                              <div className='grid grid-cols-2 p-0 gap-4' ref={idCardRef} id='id-side'>
                                 {/*id front*/}
-                                <div className='flex flex-col p-0 gap-2'>
+                                <div className='grid grid-cols-1 p-0' id='id-front'>
                                   <div className={`${idType === 'Green Card' ? 'id-card border' : idType === 'Yellow Card' ? 'id-card-yellow border' : idType === 'White Card' ? 'id-card-white border' : 'id-card border'} grid grid-rows-8 gap-0 p-0`}>
                                     <div className='flex flex-row row-span-1 py-2'>
                                       <img className='blgu-logo' src={blguLogo} alt='' />
@@ -793,7 +810,7 @@ function Dashboard() {
                                   </div>
                                 </div>
                                 {/*id back*/}
-                                <div className='flex flex-col p-0 gap-2'>
+                                <div className='grid grid-cols-1 p-0' id='id-back'>
                                   <div className={`${idType === 'Green Card' ? 'id-card-back border' : idType === 'Yellow Card' ? 'id-card-back-yellow border' : idType === 'White Card' ? 'id-card-back-white border' : 'id-card border'} grid grid-rows-8 gap-0 p-0`}>
 
                                   </div>
