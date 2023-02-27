@@ -108,6 +108,7 @@ function Dashboard() {
     setAddress('')
     setPicture(null)
     setSign(null)
+    setIdType(null)
   }
 
   const handleSaveData = async (e) => {
@@ -165,6 +166,12 @@ function Dashboard() {
         text: 'Permanent Address is required.',
         icon: 'error',
       });
+    } else if (idType === '' || idType === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Please select type of ID',
+        icon: 'error',
+      });
     } else if (picture === null || picture === '') {
       MySwal.fire({
         title: <p>Error!</p>,
@@ -179,7 +186,7 @@ function Dashboard() {
       });
     } else {
       try {
-        await writeUserData(regNo, fname, mname, sname, suffix, cStat, dateOfBirth.toLocaleDateString(), regNo, preNo, validIDUntil.toLocaleDateString(), nationality, address, picture, sign)
+        await writeUserData(regNo, fname, mname, sname, suffix, cStat, dateOfBirth.toLocaleDateString(), regNo, preNo, validIDUntil.toLocaleDateString(), nationality, address, idType, picture, sign)
         MySwal.fire({
           title: <p>Saving</p>,
           text: 'Data saved successful',
@@ -328,6 +335,12 @@ function Dashboard() {
       MySwal.fire({
         title: <p>Error!</p>,
         text: 'Permanent Address is required.',
+        icon: 'error',
+      });
+    } else if (idType === '' || idType === null) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: 'Please select type of ID',
         icon: 'error',
       });
     } else if (picture === null || picture === '') {

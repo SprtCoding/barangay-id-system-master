@@ -183,6 +183,12 @@ function ListOfIds() {
                           key="left"
                           style={{ minWidth: '180px' }}
                         >
+                          ID Type
+                        </TableCell>
+                        <TableCell
+                          key="left"
+                          style={{ minWidth: '180px' }}
+                        >
                           First Name
                         </TableCell>
                         <TableCell
@@ -271,6 +277,9 @@ function ListOfIds() {
                         .map((row) => {
                           return (
                             <TableRow hover role="checkbox" tabIndex={-1} key={row.ID}>
+                              <TableCell align="left">
+                                {row.IDType}
+                              </TableCell>
                               <TableCell align="left">
                                 {row.FirstName}
                               </TableCell>

@@ -24,7 +24,7 @@ export const AuthContextProvider = ({ children }) => {
         return signOut(auth)
     }
 
-    function writeUserData(Id, Fname, Mname, Sname, suffix, cStatus, dob, RegNo, PreNo, validationUntil, nationality, pAddress, UserImageUrl, UserImageSignUrl) {
+    function writeUserData(Id, Fname, Mname, Sname, suffix, cStatus, dob, RegNo, PreNo, validationUntil, nationality, pAddress, idType, UserImageUrl, UserImageSignUrl) {
         const db = getDatabase();
         set(ref(db, 'barangayResidentID/' + Id), {
             ID: Id,
@@ -39,6 +39,7 @@ export const AuthContextProvider = ({ children }) => {
             ValidUntil: validationUntil,
             Nationality: nationality,
             Address: pAddress,
+            IDType: idType,
             Photo: UserImageUrl,
             SigniturePhoto: UserImageSignUrl
         });
