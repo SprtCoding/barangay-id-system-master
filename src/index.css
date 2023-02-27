@@ -52,6 +52,14 @@
   color: white;
 }
 
+.text-hdr-black {
+  letter-spacing: 0.2;
+  line-height: 8px;
+  font-style: italic;
+  font-size: 7px;
+  color: black;
+}
+
 .id-title {
   font-family: 'Franklin Gothic';
   text-transform: capitalize;
@@ -117,8 +125,35 @@
   width: 345.44px;
 }
 
+.id-card-white {
+  background: url('./assets/brgyidwhite.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 224.48px;
+  width: 345.44px;
+}
+
 .id-card-back {
   background: url('./assets/idgreenback.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 224.48px;
+  width: 345.44px;
+}
+
+.id-card-back-yellow {
+  background: url('./assets/idyellowback.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 224.48px;
+  width: 345.44px;
+}
+
+.id-card-back-white {
+  background: url('./assets/idwhiteback.png');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

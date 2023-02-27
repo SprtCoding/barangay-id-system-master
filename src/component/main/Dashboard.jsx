@@ -25,6 +25,10 @@ import SignaturePad from 'react-signature-canvas'
 import blguLogo from '../../assets/blgulogo.png'
 import html2canvas from 'html2canvas'
 import { Button } from '@mui/material'
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
 // import usbDetect from 'usb-detection';
 
 const videoConstraints = {
@@ -36,6 +40,8 @@ const videoConstraints = {
 function Dashboard() {
 
   const [openModal, setOpenModal] = useState(false);
+
+  const [idType, setIdType] = useState('');
 
   const idCardRef = useRef(null);
 
@@ -62,7 +68,7 @@ function Dashboard() {
   //   require('usb-detection').stopMonitoring();
   // }
 
-  const handleDownloadIDFront = () => {
+  const handlePrintID = () => {
     html2canvas(idCardRef.current).then(canvas => {
       const printContent = document.querySelector(`#id-side`).innerHTML;
       const originalContent = document.body.innerHTML;
@@ -70,12 +76,21 @@ function Dashboard() {
       window.print();
       document.body.innerHTML = originalContent;
       setTimeout(handleAfterPrint, 1000);
-      // const link = document.createElement('a');
-      // link.download = 'id-card.png';
-      // link.href = canvas.toDataURL();
-      // link.click();
     });
   }
+
+  const handleDownloadID = () => {
+    html2canvas(idCardRef.current).then(canvas => {
+      const link = document.createElement('a');
+      link.download = 'id-card.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+  }
+
+  const handleRadioChange = (event) => {
+    setIdType(event.target.value);
+  };
 
   const { writeUserData } = UserAuth()
 
@@ -484,7 +499,7 @@ function Dashboard() {
                                   className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                                   onClick={() => setOpenModal(false)}
                                 >
-                                  <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                  <span className="bg-transparent text-black-600 h-6 w-6 text-2xl block outline-none focus:outline-none">
                                     ×
                                   </span>
                                 </button>
@@ -623,6 +638,23 @@ function Dashboard() {
                             <input type="text" className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400" value={address} onChange={handleAddress} />
                           </div>
 
+                          <div className='col-span-6'>
+                            <FormControl>
+                              <FormLabel id="demo-row-radio-buttons-group-label">Type of ID</FormLabel>
+                              <RadioGroup
+                                row
+                                aria-labelledby="demo-row-radio-buttons-group-label"
+                                name="row-radio-buttons-group"
+                                value={idType}
+                                onChange={handleRadioChange}
+                              >
+                                <FormControlLabel value="Green Card" control={<Radio />} label="Registered Voters" />
+                                <FormControlLabel value="Yellow Card" control={<Radio />} label="Not Registered Voters" />
+                                <FormControlLabel value="White Card" control={<Radio />} label="Below 6 Months" />
+                              </RadioGroup>
+                            </FormControl>
+                          </div>
+
                           {/* <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                             <label className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-gray-700">City</label>
                             <input type="text" className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400" />
@@ -672,18 +704,17 @@ function Dashboard() {
                             </div>
                             {/*body*/}
                             <div className="relative p-6 flex-auto">
-                              <div className='flex flex-row p-0 gap-4'>
+                              <div className='flex flex-row p-0 gap-4' ref={idCardRef} id='id-side'>
                                 {/*id front*/}
                                 <div className='flex flex-col p-0 gap-2'>
-                                  <h3 className='font-bold'>ID Front</h3>
-                                  <div className={`${preNo === '' ? 'id-card-yellow' : 'id-card'} grid grid-rows-8 gap-0 p-0`} ref={idCardRef} id='id-side'>
+                                  <div className={`${idType === 'Green Card' ? 'id-card border' : idType === 'Yellow Card' ? 'id-card-yellow border' : idType === 'White Card' ? 'id-card-white border' : 'id-card border'} grid grid-rows-8 gap-0 p-0`}>
                                     <div className='flex flex-row row-span-1 py-2'>
                                       <img className='blgu-logo' src={blguLogo} alt='' />
                                       <div className='flex flex-col p-0 mt-1'>
-                                        <span className='text-hdr'>Rebuplic of the Philippines</span>
-                                        <span className='text-hdr'>Province of Antique</span>
-                                        <span className='text-hdr'>Municipality of Caluya</span>
-                                        <span className='text-hdr'>BARANGAY SEMIRARA</span>
+                                        <span className={`${idType === 'Green Card' ? 'text-hdr' : idType === 'Yellow Card' ? 'text-hdr-black' : idType === 'White Card' ? 'text-hdr-black' : 'text-hdr'}`}>Rebuplic of the Philippines</span>
+                                        <span className={`${idType === 'Green Card' ? 'text-hdr' : idType === 'Yellow Card' ? 'text-hdr-black' : idType === 'White Card' ? 'text-hdr-black' : 'text-hdr'}`}>Province of Antique</span>
+                                        <span className={`${idType === 'Green Card' ? 'text-hdr' : idType === 'Yellow Card' ? 'text-hdr-black' : idType === 'White Card' ? 'text-hdr-black' : 'text-hdr'}`}>Municipality of Caluya</span>
+                                        <span className={`${idType === 'Green Card' ? 'text-hdr' : idType === 'Yellow Card' ? 'text-hdr-black' : idType === 'White Card' ? 'text-hdr-black' : 'text-hdr'}`}>BARANGAY SEMIRARA</span>
                                       </div>
                                     </div>
                                     <h2 className='id-title row-span-2 mb-2'>Barangay Identification Card</h2>
@@ -750,8 +781,7 @@ function Dashboard() {
                                 </div>
                                 {/*id back*/}
                                 <div className='flex flex-col p-0 gap-2'>
-                                  <h3 className='font-bold'>ID Back</h3>
-                                  <div className='grid grid-rows-6 card gap-0 id-card-back p-0'>
+                                  <div className={`${idType === 'Green Card' ? 'id-card-back border' : idType === 'Yellow Card' ? 'id-card-back-yellow border' : idType === 'White Card' ? 'id-card-back-white border' : 'id-card border'} grid grid-rows-8 gap-0 p-0`}>
 
                                   </div>
                                 </div>
@@ -769,9 +799,16 @@ function Dashboard() {
                               <button
                                 className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                 type="button"
-                                onClick={handleDownloadIDFront}
+                                onClick={handleDownloadID}
                               >
                                 Download
+                              </button>
+                              <button
+                                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                type="button"
+                                onClick={handlePrintID}
+                              >
+                                Print
                               </button>
                             </div>
                           </div>
