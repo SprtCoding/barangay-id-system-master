@@ -46,17 +46,17 @@
 
 .text-hdr {
   letter-spacing: 0.2;
-  line-height: 8px;
+  line-height: 15px;
   font-style: italic;
-  font-size: 7px;
+  font-size: 11px;
   color: white;
 }
 
 .text-hdr-black {
   letter-spacing: 0.2;
-  line-height: 8px;
+  line-height: 15px;
   font-style: italic;
-  font-size: 7px;
+  font-size: 11px;
   color: black;
 }
 
@@ -66,18 +66,19 @@
   font-style: italic;
   text-align: center;
   color: green;
+  font-size: 22px;
   padding: 0;
   margin-top: -10px;
 }
 
 .label-id {
-  font-size: 8px;
+  font-size: 12px;
   font-weight: 800;
   font-style: italic;
 }
 
 .label-id-data {
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 500;
   border: none;
   background: none;
@@ -91,20 +92,20 @@
 
 .id-pic {
   padding: 0;
-  width: 65px;
-  height: 65px;
+  width: 120px;
+  height: 120px;
 }
 
 .id-pic-user {
   border-radius: 5px;
-  width: 65px;
-  height: 65px;
+  width: 120px;
+  height: 120px;
 }
 
 .sign-user {
   margin-top: 10px;
-  width: 35px;
-  height: 17px;
+  width: 45px;
+  height: 27px;
 }
 
 .id-card {
@@ -121,8 +122,8 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: 224.48px;
-  width: 345.44px;
+  height: 368px;
+  width: 552px;
 }
 
 .id-card-white {
@@ -130,8 +131,8 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: 224.48px;
-  width: 345.44px;
+  height: 368px;
+  width: 552px;
 }
 
 .id-card-back {
@@ -139,8 +140,8 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: 224.48px;
-  width: 345.44px;
+  height: 368px;
+  width: 552px;
 }
 
 .id-card-back-yellow {
@@ -148,8 +149,8 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: 224.48px;
-  width: 345.44px;
+  height: 368px;
+  width: 552px;
 }
 
 .id-card-back-white {
@@ -157,13 +158,13 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: 224.48px;
-  width: 345.44px;
+  height: 368px;
+  width: 552px;
 }
 
 .blgu-logo {
-  width: 45px;
-  height: 45px;
+  width: 85px;
+  height: 75px;
 }
 
 .table-photo {

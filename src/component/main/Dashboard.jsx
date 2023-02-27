@@ -715,7 +715,7 @@ function Dashboard() {
                       <div
                         className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
                       >
-                        <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                        <div className="relative w-auto my-6 mx-auto max-w-7xl">
                           {/*content*/}
                           <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                             {/*header*/}
@@ -738,9 +738,9 @@ function Dashboard() {
                                 {/*id front*/}
                                 <div className='grid grid-cols-1 p-0' id='id-front'>
                                   <div className={`${idType === 'Green Card' ? 'id-card border' : idType === 'Yellow Card' ? 'id-card-yellow border' : idType === 'White Card' ? 'id-card-white border' : 'id-card border'} grid grid-rows-8 gap-0 p-0`}>
-                                    <div className='flex flex-row row-span-1 py-2'>
-                                      <img className='blgu-logo' src={blguLogo} alt='' />
-                                      <div className='flex flex-col p-0 mt-1'>
+                                    <div className='grid grid-cols-6 row-span-1 py-2'>
+                                      <img className='blgu-logo col-span-1' src={blguLogo} alt='' />
+                                      <div className='flex flex-col p-0 mt-1 col-span-5'>
                                         <span className={`${idType === 'Green Card' ? 'text-hdr' : idType === 'Yellow Card' ? 'text-hdr-black' : idType === 'White Card' ? 'text-hdr-black' : 'text-hdr'}`}>Rebuplic of the Philippines</span>
                                         <span className={`${idType === 'Green Card' ? 'text-hdr' : idType === 'Yellow Card' ? 'text-hdr-black' : idType === 'White Card' ? 'text-hdr-black' : 'text-hdr'}`}>Province of Antique</span>
                                         <span className={`${idType === 'Green Card' ? 'text-hdr' : idType === 'Yellow Card' ? 'text-hdr-black' : idType === 'White Card' ? 'text-hdr-black' : 'text-hdr'}`}>Municipality of Caluya</span>
@@ -748,30 +748,30 @@ function Dashboard() {
                                       </div>
                                     </div>
                                     <h2 className='id-title row-span-2 mb-2'>Barangay Identification Card</h2>
-                                    <div className='grid grid-cols-9 row-span-5 p-0 px-5'>
-                                      <div className='grid grid-rows-4 col-span-2'>
-                                        <div className='card id-pic col-span-1'>
+                                    <div className='grid grid-cols-12 row-span-5 p-0 px-5 gap-2'>
+                                      <div className='grid grid-rows-5 col-span-3 gap-2'>
+                                        <div className='id-pic row-span-2'>
                                           <img src={picture} alt='' className='id-pic-user' />
                                         </div>
-                                        <div className='flex flex-col gap-y-1 col-span-3 items-center'>
+                                        <div className='flex flex-col gap-y-1 row-span-4 items-center'>
                                           <img src={sign} alt='' className='sign-user' />
                                           <p className='label-id'>Signature</p>
                                         </div>
                                       </div>
 
-                                      <div className='flex flex-col p-0 px-2 gap-1 gap-y-0 col-span-7'>
-                                        <div className='flex flex-row p-0 gap-1'>
+                                      <div className='flex flex-col p-0 px-2 gap-1 gap-y-0 col-span-9'>
+                                        <div className='grid grid-cols-4 p-0'>
                                           <p className='label-id'>First Name</p>
                                           <p className='label-id'>Middle Name</p>
                                           <p className='label-id'>Surname</p>
                                           <p className='label-id'>Suffix</p>
                                         </div>
-                                        <div className='flex flex-row p-0 gap-1'>
-                                          <p className='label-id-data'>{fname + " " + mname + " " + sname + " " + suffix}</p>
-                                          {/* <p className='label-id-data'>{fname}</p>
+                                        <div className='grid grid-cols-4 p-0'>
+                                          {/* <p className='label-id-data'>{fname + " " + mname + " " + sname + " " + suffix}</p> */}
+                                          <p className='label-id-data'>{fname}</p>
                                           <p className='label-id-data'>{mname}</p>
                                           <p className='label-id-data'>{sname}</p>
-                                          <p className='label-id-data'>{suffix}</p> */}
+                                          <p className='label-id-data'>{suffix}</p>
                                         </div>
                                         {/* <p className='label-id'>{fname + ' ' + mname + ' ' + sname + ' ' + suffix}</p> */}
                                         {/* 2nd */}
