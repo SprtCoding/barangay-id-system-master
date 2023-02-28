@@ -730,9 +730,9 @@ function Dashboard() {
                                 value={idType}
                                 onChange={handleRadioChange}
                               >
-                                <FormControlLabel value="Green Card" control={<Radio />} label="Registered Voters" />
-                                <FormControlLabel value="Yellow Card" control={<Radio />} label="Not Registered Voters" />
-                                <FormControlLabel value="White Card" control={<Radio />} label="Below 6 Months" />
+                                <FormControlLabel value="Green Card" control={<Radio size="small" />} label="Registered Voters" />
+                                <FormControlLabel value="Yellow Card" control={<Radio size="small" />} label="Not Registered Voters" />
+                                <FormControlLabel value="White Card" control={<Radio size="small" />} label="Below 6 Months" />
                               </RadioGroup>
                             </FormControl>
                           </div>
