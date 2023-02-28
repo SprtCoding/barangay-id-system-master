@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/barangay-id-system-master/static/css/main.8ab4ff89.css",
+    "main.js": "/barangay-id-system-master/static/js/main.91a8c1f3.js",
+    "static/media/blgu.png": "/barangay-id-system-master/static/media/blgu.ffee1664672155f25960.png",
+    "static/media/idyellowback.png": "/barangay-id-system-master/static/media/idyellowback.a6096d5968b4f33c5c5f.png",
+    "static/media/idgreenback.png": "/barangay-id-system-master/static/media/idgreenback.7a3b26e017dcc2541163.png",
+    "static/media/idwhiteback.png": "/barangay-id-system-master/static/media/idwhiteback.f3677c5a4360152b3a06.png",
+    "static/media/blgulogo.png": "/barangay-id-system-master/static/media/blgulogo.e4dcb306f168a9dce27b.png",
+    "static/media/franklin.TTF": "/barangay-id-system-master/static/media/franklin.367530c1dac1148713d7.TTF",
+    "static/media/brgyidgreen.jpg": "/barangay-id-system-master/static/media/brgyidgreen.a3f57f156ce756f1b893.jpg",
+    "static/media/brgyidyellow.jpg": "/barangay-id-system-master/static/media/brgyidyellow.82bb9691065def1c32cb.jpg",
+    "static/media/logokap.png": "/barangay-id-system-master/static/media/logokap.306cc6fb4a60146afa49.png",
+    "static/media/brgyidwhite.jpg": "/barangay-id-system-master/static/media/brgyidwhite.7c8b7c362d9150ba1d8c.jpg",
+    "index.html": "/barangay-id-system-master/index.html",
+    "main.8ab4ff89.css.map": "/barangay-id-system-master/static/css/main.8ab4ff89.css.map",
+    "main.91a8c1f3.js.map": "/barangay-id-system-master/static/js/main.91a8c1f3.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8ab4ff89.css",
+    "static/js/main.91a8c1f3.js"
+  ]
+}
