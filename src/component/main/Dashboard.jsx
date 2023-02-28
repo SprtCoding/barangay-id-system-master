@@ -45,7 +45,7 @@ function Dashboard() {
 
   const [isPrinted, setIsPrinted] = useState(false);
 
-  const [isLoadingGenerate, setIsLoadingGenerate] = useState(false);
+  // const [isLoadingGenerate, setIsLoadingGenerate] = useState(false);
 
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
 

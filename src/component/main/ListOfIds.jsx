@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import SideNavBar from "../../navbar/SideNavBar"
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
@@ -27,12 +27,84 @@ import PrintIcon from '@mui/icons-material/Print'
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { getDatabase, ref, onValue, remove } from "firebase/database";
+import blguLogo from '../../assets/blgulogo.png'
+import html2canvas from 'html2canvas'
 
 function ListOfIds() {
+
+  //modal
+  const [showModal, setShowModal] = useState(false);
+
+  const idCardRef = useRef(null);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
+  const [records, setRecords] = useState([]);
+
+  const handlePrint = (id) => {
+    // setID(id)
+    getDataPrint(id)
+    setShowModal(true)
+  }
+
+  const getDataPrint = async (id) => {
+    const db = getDatabase();
+    const idRef = ref(db, 'barangayResidentID/' + id);
+    onValue(idRef, (snapshot) => {
+      const data = snapshot.val();
+      setRecords(data)
+      console.log(data)
+    });
+  }
+
+  // useEffect(() => {
+  //   getDataPrint()
+  // }, []);
+
+  const handleDownloadID = () => {
+    html2canvas(idCardRef.current).then(canvas => {
+      const link = document.createElement('a');
+      link.download = 'id-card.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+  }
+
+  const handlePrintID = () => {
+    html2canvas(idCardRef.current).then(canvas => {
+      const printContent = document.querySelector(`#id-side`).innerHTML;
+      // const frontCanvas = document.getElementById('id-front')
+      // const backCanvas = document.getElementById('id-back')
+      const originalContent = document.body.innerHTML;
+      document.body.innerHTML = printContent;
+      // const printWindow = window.open('', 'Print', 'height = 600, width = 800')
+      // printWindow.document.write(`
+      // <html>
+      //   <head>
+      //     <title> Print ID </title>
+      //   </head>
+      //   <body>
+      //     <div>
+      //       <img scr="${frontCanvas.toDataURL()}" />
+      //     </div>
+      //     <div>
+      //       <img scr="${backCanvas.toDataURL()}" />
+      //     </div>
+      //   </body>
+      // </html>`)
+      window.print();
+      document.body.innerHTML = originalContent;
+      setTimeout(handleAfterPrint, 1000);
+    });
+  }
+
+  function handleAfterPrint() {
+    if (document.hidden) {
+      return;
+    }
+    window.location.reload();
+  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -344,7 +416,9 @@ function ListOfIds() {
                                             cursor: "pointer",
                                           }}
                                           className="cursor-pointer"
-                                        // onClick={() => editUser(row.id)}
+                                          onClick={() => {
+                                            handlePrint(row.ID)
+                                          }}
                                         />
                                       </>
                                     )
@@ -378,6 +452,146 @@ function ListOfIds() {
                 />
               </Paper>
             </div>
+            {showModal ? (
+              <>
+                <div
+                  className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                >
+                  <div className="relative w-auto my-6 mx-auto max-w-7xl">
+                    {/*content*/}
+                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                      {/*header*/}
+                      <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                        <h3 className="text-xl font-semibold">
+                          Your Generated ID
+                        </h3>
+                        <button
+                          className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                          onClick={() => setShowModal(false)}
+                        >
+                          <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                            ×
+                          </span>
+                        </button>
+                      </div>
+                      {/*body*/}
+                      <div className="relative p-6 flex-auto">
+                        <div className='grid grid-cols-2 p-0 gap-4' ref={idCardRef} id='id-side'>
+                          {/*id front*/}
+                          <div className='grid grid-cols-1 p-0' id='id-front'>
+                            <div className={`${records.IDType === 'Green Card' ? 'id-card border' : records.IDType === 'Yellow Card' ? 'id-card-yellow border' : records.IDType === 'White Card' ? 'id-card-white border' : 'id-card border'} grid grid-rows-8 gap-0 p-0`}>
+                              <div className='grid grid-cols-6 row-span-1 py-2'>
+                                <img className='blgu-logo col-span-1' src={blguLogo} alt='' />
+                                <div className='flex flex-col p-0 mt-1 col-span-5'>
+                                  <span className={`${records.IDType === 'Green Card' ? 'text-hdr' : records.IDType === 'Yellow Card' ? 'text-hdr-black' : records.IDType === 'White Card' ? 'text-hdr-black' : 'text-hdr'}`}>Rebuplic of the Philippines</span>
+                                  <span className={`${records.IDType === 'Green Card' ? 'text-hdr' : records.IDType === 'Yellow Card' ? 'text-hdr-black' : records.IDType === 'White Card' ? 'text-hdr-black' : 'text-hdr'}`}>Province of Antique</span>
+                                  <span className={`${records.IDType === 'Green Card' ? 'text-hdr' : records.IDType === 'Yellow Card' ? 'text-hdr-black' : records.IDType === 'White Card' ? 'text-hdr-black' : 'text-hdr'}`}>Municipality of Caluya</span>
+                                  <span className={`${records.IDType === 'Green Card' ? 'text-hdr' : records.IDType === 'Yellow Card' ? 'text-hdr-black' : records.IDType === 'White Card' ? 'text-hdr-black' : 'text-hdr'}`}>BARANGAY SEMIRARA</span>
+                                </div>
+                              </div>
+                              <h2 className='id-title row-span-2 mb-2'>Barangay Identification Card</h2>
+                              <div className='grid grid-cols-12 row-span-5 p-0 px-5 gap-2'>
+                                <div className='grid grid-rows-5 col-span-3 gap-2'>
+                                  <div className='id-pic row-span-2'>
+                                    <img src={records.Photo} alt='' className='id-pic-user' />
+                                  </div>
+                                  <div className='flex flex-col gap-y-1 row-span-4 items-center'>
+                                    <img src={records.SigniturePhoto} alt='' className='sign-user' />
+                                    <p className='label-id'>Signature</p>
+                                  </div>
+                                </div>
+
+                                <div className='flex flex-col p-0 px-2 gap-1 gap-y-0 col-span-9'>
+                                  <div className='grid grid-cols-4 p-0'>
+                                    <p className='label-id'>First Name</p>
+                                    <p className='label-id'>Middle Name</p>
+                                    <p className='label-id'>Surname</p>
+                                    <p className='label-id'>Suffix</p>
+                                  </div>
+                                  <div className='grid grid-cols-4 p-0'>
+                                    {/* <p className='label-id-data'>{fname + " " + mname + " " + sname + " " + suffix}</p> */}
+                                    <p className='label-id-data'>{records.FirstName}</p>
+                                    <p className='label-id-data'>{records.MiddleName}</p>
+                                    <p className='label-id-data'>{records.Surname}</p>
+                                    <p className='label-id-data'>{records.Suffix}</p>
+                                  </div>
+                                  {/* <p className='label-id'>{fname + ' ' + mname + ' ' + sname + ' ' + suffix}</p> */}
+                                  {/* 2nd */}
+                                  <div className='flex flex-col p-0 gap-1 gap-y-0'>
+                                    <div className='grid grid-cols-3 p-0'>
+                                      <p className='label-id'>Date of Birth</p>
+                                      <p className='label-id'>Civil Status</p>
+                                      <p className='label-id'>Nationality</p>
+                                    </div>
+                                    <div className='grid grid-cols-3 p-0'>
+                                      <p className='label-id-data'>{records.DateOfBirth}</p>
+                                      <p className='label-id-data'>{records.CivilStatus}</p>
+                                      <p className='label-id-data'>{records.Nationality}</p>
+                                    </div>
+                                  </div>
+                                  {/* 3rd */}
+                                  <div className='flex flex-col p-0 gap-0 gap-y-0'>
+                                    <div className='grid grid-cols-5 p-0'>
+                                      <p className='label-id col-span-2'>Registration Number</p>
+                                      <p className='label-id col-span-2'>Precinct Number</p>
+                                      <p className='label-id col-span-1'>Valid Until</p>
+                                    </div>
+                                    <div className='grid grid-cols-5 p-0'>
+                                      <p className='label-id-data col-span-2'>{records.RegistrationNumber}</p>
+                                      <p className='label-id-data col-span-2'>{records.PrecinctNumber}</p>
+                                      <p className='label-id-data col-span-1'>{records.ValidUntil}</p>
+                                    </div>
+                                  </div>
+                                  {/* 4rd */}
+                                  <div className='flex flex-col p-0 gap-1 gap-y-0'>
+                                    <p className='label-id'>Address</p>
+                                    <p className='label-id-data col-span-2'>{records.Address}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          {/*id back*/}
+                          <div className='grid grid-cols-1 p-0' id='id-back'>
+                            <div className={`${records.IDType === 'Green Card' ? 'id-card-back border' : records.IDType === 'Yellow Card' ? 'id-card-back-yellow border' : records.IDType === 'White Card' ? 'id-card-back-white border' : 'id-card-back border'} grid grid-rows-8 gap-0 p-0`}>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {/*footer*/}
+                      <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                        <button
+                          className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                          type="button"
+                          onClick={() => {
+                            setShowModal(false)
+                          }
+                          }
+                        >
+                          Close
+                        </button>
+                        <button
+                          className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                          type="button"
+                          onClick={handleDownloadID}
+                        >
+                          Download
+                        </button>
+                        <button
+                          className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                          type="button"
+                          onClick={handlePrintID}
+                        >
+                          Print
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+              </>
+            ) : null}
           </div>
         </div>
       </main>
