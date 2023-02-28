@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap');
 
 @layer components {
   .card {
@@ -16,6 +17,17 @@
   src: local("Franklin Gothic"),
     url("./fonts/franklin.TTF") format("truetype");
   font-weight: bold;
+}
+
+@font-face {
+  font-family: "Baskerville Old Face Regular";
+  src: local("Baskerville Old Face Regular"),
+    url("./fonts/Baskerville.TTF") format("truetype");
+  font-weight: normal;
+}
+
+main {
+  font-family: 'Baloo 2';
 }
 
 .bg {
@@ -45,18 +57,20 @@
 }
 
 .text-hdr {
+  font-family: 'Baskerville Old Face Regular';
   letter-spacing: 0.2;
   line-height: 15px;
   font-style: italic;
-  font-size: 11px;
+  font-size: 12px;
   color: white;
 }
 
 .text-hdr-black {
+  font-family: 'Baskerville Old Face Regular';
   letter-spacing: 0.2;
   line-height: 15px;
   font-style: italic;
-  font-size: 11px;
+  font-size: 12px;
   color: black;
 }
 
@@ -66,7 +80,7 @@
   font-style: italic;
   text-align: center;
   color: green;
-  font-size: 22px;
+  font-size: 24px;
   padding: 0;
   margin-top: -10px;
 }
@@ -78,8 +92,10 @@
 }
 
 .label-id-data {
-  font-size: 11px;
-  font-weight: 500;
+  font-family: Arial, Helvetica, serif;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
   border: none;
   background: none;
   outline: none;
