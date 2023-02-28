@@ -21,8 +21,9 @@ import TableRow from '@mui/material/TableRow';
 import Divider from "@mui/material/Divider"
 import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
-import EditIcon from "@mui/icons-material/Edit";
+import LaunchIcon from "@mui/icons-material/Launch";
 import DeleteIcon from "@mui/icons-material/Delete";
+import PrintIcon from '@mui/icons-material/Print'
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { getDatabase, ref, onValue, remove } from "firebase/database";
@@ -321,15 +322,33 @@ function ListOfIds() {
                               </TableCell>
                               <TableCell align="left">
                                 <Stack spacing={2} direction="row">
-                                  <EditIcon
-                                    style={{
-                                      fontSize: "20px",
-                                      color: "blue",
-                                      cursor: "pointer",
-                                    }}
-                                    className="cursor-pointer"
-                                  // onClick={() => editUser(row.id)}
-                                  />
+                                  {
+                                    row.isPrinted === 'Printed' ? (
+                                      <>
+                                        <LaunchIcon
+                                          style={{
+                                            fontSize: "20px",
+                                            color: "blue",
+                                            cursor: "pointer",
+                                          }}
+                                          className="cursor-pointer"
+                                        // onClick={() => editUser(row.id)}
+                                        />
+                                      </>
+                                    ) : (
+                                      <>
+                                        <PrintIcon
+                                          style={{
+                                            fontSize: "20px",
+                                            color: "green",
+                                            cursor: "pointer",
+                                          }}
+                                          className="cursor-pointer"
+                                        // onClick={() => editUser(row.id)}
+                                        />
+                                      </>
+                                    )
+                                  }
                                   <DeleteIcon
                                     style={{
                                       fontSize: "20px",

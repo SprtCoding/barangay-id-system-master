@@ -29,6 +29,8 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import usbDetect from 'usb-detection';
 
 const videoConstraints = {
@@ -41,7 +43,15 @@ function Dashboard() {
 
   const [openModal, setOpenModal] = useState(false);
 
+  const [isPrinted, setIsPrinted] = useState(false);
+
+  const [isLoadingGenerate, setIsLoadingGenerate] = useState(false);
+
+  const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
+
   const [idType, setIdType] = useState('');
+
+  // const [printed, setPrinted] = useState('');
 
   const idCardRef = useRef(null);
 
@@ -69,6 +79,7 @@ function Dashboard() {
   // }
 
   const handlePrintID = () => {
+    setIsPrinted(true)
     html2canvas(idCardRef.current).then(canvas => {
       const printContent = document.querySelector(`#id-side`).innerHTML;
       // const frontCanvas = document.getElementById('id-front')
@@ -95,6 +106,35 @@ function Dashboard() {
       setTimeout(handleAfterPrint, 1000);
     });
   }
+
+  useEffect(() => {
+    window.onafterprint = () => {
+      if (isPrinted) {
+        Swal.fire({
+          title: 'Printing',
+          text: "Printing is done.",
+          icon: 'success',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire(
+              'Saving Data',
+              'Data save successfully.',
+              'success'
+            )
+          }
+        })
+      } else {
+        Swal.fire({
+          title: 'Printing',
+          text: 'Printing was cancelled.',
+          icon: 'error',
+        });
+      }
+      setIsPrinted(false)
+    }
+  }, [isPrinted]);
 
   const handleDownloadID = () => {
     html2canvas(idCardRef.current).then(canvas => {
@@ -129,98 +169,115 @@ function Dashboard() {
   }
 
   const handleSaveData = async (e) => {
-    if (fname === '' || fname === null) {
-      MySwal.fire({
-        title: <p>Error!</p>,
-        text: 'First name is required.',
-        icon: 'error',
-      });
-    } else if (mname === '' || mname === null) {
-      MySwal.fire({
-        title: <p>Error!</p>,
-        text: 'Middle name is required.',
-        icon: 'error',
-      });
-    } else if (sname === '' || sname === null) {
-      MySwal.fire({
-        title: <p>Error!</p>,
-        text: 'Surname is required.',
-        icon: 'error',
-      });
-    } else if (cStat === '' || cStat === null) {
-      MySwal.fire({
-        title: <p>Error!</p>,
-        text: 'Civil status is required.',
-        icon: 'error',
-      });
-    } else if (dob === '' || dob === null) {
-      MySwal.fire({
-        title: <p>Error!</p>,
-        text: 'Date of birth is required.',
-        icon: 'error',
-      });
-    } else if (regNo === '' || regNo === null) {
-      MySwal.fire({
-        title: <p>Error!</p>,
-        text: 'Registration Number is required.',
-        icon: 'error',
-      });
-    } else if (validUntil === '' || validUntil === null) {
-      MySwal.fire({
-        title: <p>Error!</p>,
-        text: 'Validation of ID is required.',
-        icon: 'error',
-      });
-    } else if (nationality === '' || nationality === null) {
-      MySwal.fire({
-        title: <p>Error!</p>,
-        text: 'Nationality is required.',
-        icon: 'error',
-      });
-    } else if (address === '' || address === null) {
-      MySwal.fire({
-        title: <p>Error!</p>,
-        text: 'Permanent Address is required.',
-        icon: 'error',
-      });
-    } else if (idType === '' || idType === null) {
-      MySwal.fire({
-        title: <p>Error!</p>,
-        text: 'Please select type of ID',
-        icon: 'error',
-      });
-    } else if (picture === null || picture === '') {
-      MySwal.fire({
-        title: <p>Error!</p>,
-        text: 'Please capture a picture.',
-        icon: 'error',
-      });
-    } else if (sign === null || sign === '') {
-      MySwal.fire({
-        title: <p>Error!</p>,
-        text: 'Please sign before proceed.',
-        icon: 'error',
-      });
-    } else {
-      try {
-        await writeUserData(regNo, fname, mname, sname, suffix, cStat, dateOfBirth.toLocaleDateString(), regNo, preNo, validIDUntil.toLocaleDateString(), nationality, address, idType, picture, sign)
-        MySwal.fire({
-          title: <p>Saving</p>,
-          text: 'Data saved successful',
-          icon: 'success',
-        }).then((result) => {
-          if (result.value) {
-            clearForm();
-          }
-        });
-      } catch (e) {
+    setIsLoadingSubmit(true)
+    setTimeout(() => {
+      if (fname === '' || fname === null) {
+        setIsLoadingSubmit(false)
         MySwal.fire({
           title: <p>Error!</p>,
-          text: e.message,
+          text: 'First name is required.',
           icon: 'error',
         });
+      } else if (mname === '' || mname === null) {
+        setIsLoadingSubmit(false)
+        MySwal.fire({
+          title: <p>Error!</p>,
+          text: 'Middle name is required.',
+          icon: 'error',
+        });
+      } else if (sname === '' || sname === null) {
+        setIsLoadingSubmit(false)
+        MySwal.fire({
+          title: <p>Error!</p>,
+          text: 'Surname is required.',
+          icon: 'error',
+        });
+      } else if (cStat === '' || cStat === null) {
+        setIsLoadingSubmit(false)
+        MySwal.fire({
+          title: <p>Error!</p>,
+          text: 'Civil status is required.',
+          icon: 'error',
+        });
+      } else if (dob === '' || dob === null) {
+        setIsLoadingSubmit(false)
+        MySwal.fire({
+          title: <p>Error!</p>,
+          text: 'Date of birth is required.',
+          icon: 'error',
+        });
+      } else if (regNo === '' || regNo === null) {
+        setIsLoadingSubmit(false)
+        MySwal.fire({
+          title: <p>Error!</p>,
+          text: 'Registration Number is required.',
+          icon: 'error',
+        });
+      } else if (validUntil === '' || validUntil === null) {
+        setIsLoadingSubmit(false)
+        MySwal.fire({
+          title: <p>Error!</p>,
+          text: 'Validation of ID is required.',
+          icon: 'error',
+        });
+      } else if (nationality === '' || nationality === null) {
+        setIsLoadingSubmit(false)
+        MySwal.fire({
+          title: <p>Error!</p>,
+          text: 'Nationality is required.',
+          icon: 'error',
+        });
+      } else if (address === '' || address === null) {
+        setIsLoadingSubmit(false)
+        MySwal.fire({
+          title: <p>Error!</p>,
+          text: 'Permanent Address is required.',
+          icon: 'error',
+        });
+      } else if (idType === '' || idType === null) {
+        setIsLoadingSubmit(false)
+        MySwal.fire({
+          title: <p>Error!</p>,
+          text: 'Please select type of ID',
+          icon: 'error',
+        });
+      } else if (picture === null || picture === '') {
+        setIsLoadingSubmit(false)
+        MySwal.fire({
+          title: <p>Error!</p>,
+          text: 'Please capture a picture.',
+          icon: 'error',
+        });
+      } else if (sign === null || sign === '') {
+        setIsLoadingSubmit(false)
+        MySwal.fire({
+          title: <p>Error!</p>,
+          text: 'Please sign before proceed.',
+          icon: 'error',
+        });
+      } else {
+        try {
+          writeUserData(regNo, fname, mname, sname, suffix, cStat, dateOfBirth.toLocaleDateString(), regNo, preNo, validIDUntil.toLocaleDateString(), nationality, address, idType, picture, sign, 'Not Printed')
+          MySwal.fire({
+            title: <p>Saving</p>,
+            text: 'Data saved successful',
+            icon: 'success',
+          }).then((result) => {
+            if (result.value) {
+              clearForm()
+              setIsLoadingSubmit(false)
+            }
+          });
+        } catch (e) {
+          setIsLoadingSubmit(false)
+          MySwal.fire({
+            title: <p>Error!</p>,
+            text: e.message,
+            icon: 'error',
+          });
+        }
       }
-    }
+    }, 2000)
   }
 
   function handleAfterPrint() {
@@ -285,11 +342,6 @@ function Dashboard() {
     setSign(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"))
     setOpenModal(false)
   }
-
-  // useEffect(() => {
-  //   componentDidMount()
-  //   componentWillUnmount()
-  // }, []);
 
   const clear = () => {
     sigCanvas.current.clear()
@@ -705,7 +757,19 @@ function Dashboard() {
                         <button onClick={manageInputs} type="button"
                           className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Generate ID</button>
                         <button onClick={handleSaveData} type="button"
-                          className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Save Data</button>
+                          className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                          {
+                            isLoadingSubmit ? (
+                              <>
+                                <FontAwesomeIcon icon={faSpinner} size="lg" className='mr-2' spin /> Saving...
+                              </>
+                            ) : (
+                              <>
+                                Save Data
+                              </>
+                            )
+                          }
+                        </button>
                       </div>
                     </div>
                   </form>
@@ -847,7 +911,6 @@ function Dashboard() {
                       <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                     </>
                   ) : null}
-
                 </div>
               </div>
             </div>
