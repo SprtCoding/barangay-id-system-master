@@ -218,7 +218,7 @@ function ListOfIds() {
           </AppBar>
           <div className='p-0'>
             <div className='mt-10 sm:mt-0 w-full'>
-              <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+              <Paper sx={{ width: '100%', overflow: 'hidden', marginTop: '20px' }}>
                 <Typography
                   gutterBottom
                   variant="h5"
@@ -248,97 +248,97 @@ function ListOfIds() {
                   ></Typography>
                 </Stack>
                 <Box height={10} />
-                <TableContainer sx={{ maxHeight: 330 }}>
+                <TableContainer sx={{ maxHeight: 450 }}>
                   <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                       <TableRow>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px' }}
+                          style={{ minWidth: '180px', fontWeight: 'bold' }}
                         >
                           ID Type
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px' }}
+                          style={{ minWidth: '180px', fontWeight: 'bold' }}
                         >
                           First Name
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px' }}
+                          style={{ minWidth: '180px', fontWeight: 'bold' }}
                         >
                           Middle Name
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px' }}
+                          style={{ minWidth: '180px', fontWeight: 'bold' }}
                         >
                           Surname
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px' }}
+                          style={{ minWidth: '180px', fontWeight: 'bold' }}
                         >
                           Suffix
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px' }}
+                          style={{ minWidth: '180px', fontWeight: 'bold' }}
                         >
                           Civil Status
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px' }}
+                          style={{ minWidth: '180px', fontWeight: 'bold' }}
                         >
                           Date of Birth
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px' }}
+                          style={{ minWidth: '180px', fontWeight: 'bold' }}
                         >
                           Registration Number
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px' }}
+                          style={{ minWidth: '180px', fontWeight: 'bold' }}
                         >
                           Precinct Number
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px' }}
+                          style={{ minWidth: '180px', fontWeight: 'bold' }}
                         >
                           Valid Until
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px' }}
+                          style={{ minWidth: '180px', fontWeight: 'bold' }}
                         >
                           Nationality
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px' }}
+                          style={{ minWidth: '180px', fontWeight: 'bold' }}
                         >
                           Address
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px' }}
+                          style={{ minWidth: '180px', fontWeight: 'bold' }}
                         >
                           Photo
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px' }}
+                          style={{ minWidth: '180px', fontWeight: 'bold' }}
                         >
                           Signature
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px' }}
+                          style={{ minWidth: '180px', fontWeight: 'bold' }}
                         >
                           Action
                         </TableCell>

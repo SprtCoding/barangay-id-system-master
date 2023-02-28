@@ -498,7 +498,7 @@ function Dashboard() {
               </IconButton>
             </Toolbar>
           </AppBar>
-          <div className='p-10'>
+          <div className='p-0 pt-10'>
             <div className="mt-10 sm:mt-0 w-full">
               <div className="md:grid md:grid-cols-3 md:gap-6">
                 <div className="md:col-span-1">
