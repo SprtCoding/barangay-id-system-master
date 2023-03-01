@@ -1,37 +1,36 @@
-import React, { useState, useEffect, useRef } from 'react'
-import SideNavBar from "../../navbar/SideNavBar"
-import AppBar from '@mui/material/AppBar'
-import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
-import IconButton from '@mui/material/IconButton'
-import MenuIcon from '@mui/icons-material/Menu'
-import { UserAuth } from '../context/AuthContext'
-import { useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
-import LogoutIcon from '@mui/icons-material/Logout'
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Divider from "@mui/material/Divider"
-import Box from "@mui/material/Box"
-import Stack from "@mui/material/Stack"
+import React, { useState, useEffect, useRef } from "react";
+import SideNavBar from "../../navbar/SideNavBar";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import { UserAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import LogoutIcon from "@mui/icons-material/Logout";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import Divider from "@mui/material/Divider";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import LaunchIcon from "@mui/icons-material/Launch";
 import DeleteIcon from "@mui/icons-material/Delete";
-import PrintIcon from '@mui/icons-material/Print'
+import PrintIcon from "@mui/icons-material/Print";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { getDatabase, ref, onValue, remove } from "firebase/database";
-import blguLogo from '../../assets/blgulogo.png'
-import html2canvas from 'html2canvas'
+import blguLogo from "../../assets/blgulogo.png";
+import html2canvas from "html2canvas";
 
 function ListOfIds() {
-
   //modal
   const [showModal, setShowModal] = useState(false);
 
@@ -44,35 +43,35 @@ function ListOfIds() {
 
   const handlePrint = (id) => {
     // setID(id)
-    getDataPrint(id)
-    setShowModal(true)
-  }
+    getDataPrint(id);
+    setShowModal(true);
+  };
 
   const getDataPrint = async (id) => {
     const db = getDatabase();
-    const idRef = ref(db, 'barangayResidentID/' + id);
+    const idRef = ref(db, "barangayResidentID/" + id);
     onValue(idRef, (snapshot) => {
       const data = snapshot.val();
-      setRecords(data)
-      console.log(data)
+      setRecords(data);
+      console.log(data);
     });
-  }
+  };
 
   // useEffect(() => {
   //   getDataPrint()
   // }, []);
 
   const handleDownloadID = () => {
-    html2canvas(idCardRef.current).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'id-card.png';
+    html2canvas(idCardRef.current).then((canvas) => {
+      const link = document.createElement("a");
+      link.download = "id-card.png";
       link.href = canvas.toDataURL();
       link.click();
     });
-  }
+  };
 
   const handlePrintID = () => {
-    html2canvas(idCardRef.current).then(canvas => {
+    html2canvas(idCardRef.current).then((canvas) => {
       const printContent = document.querySelector(`#id-side`).innerHTML;
       // const frontCanvas = document.getElementById('id-front')
       // const backCanvas = document.getElementById('id-back')
@@ -97,7 +96,7 @@ function ListOfIds() {
       document.body.innerHTML = originalContent;
       setTimeout(handleAfterPrint, 1000);
     });
-  }
+  };
 
   function handleAfterPrint() {
     if (document.hidden) {
@@ -116,7 +115,7 @@ function ListOfIds() {
   };
 
   useEffect(() => {
-    getData()
+    getData();
   }, []);
 
   const deleteUser = (id) => {
@@ -126,7 +125,7 @@ function ListOfIds() {
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      cancelButtonColor: "#ea4343",
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.value) {
@@ -137,66 +136,66 @@ function ListOfIds() {
 
   const deleteApi = async (id) => {
     const db = getDatabase();
-    await remove(ref(db, 'barangayResidentID/' + id));
+    await remove(ref(db, "barangayResidentID/" + id));
     Swal.fire("Deleted!", "Your file has been deleted.", "success");
-    getData()
+    getData();
   };
 
   const getData = async () => {
     const db = getDatabase();
-    const idRef = ref(db, 'barangayResidentID/');
+    const idRef = ref(db, "barangayResidentID/");
     onValue(idRef, (snapshot) => {
       let records = [];
-      snapshot.forEach(childSnapshot => {
+      snapshot.forEach((childSnapshot) => {
         // let keyName = childSnapshot.key;
-        let data = childSnapshot.val()
-        records.push(data)
-      })
-      setRows(records)
+        let data = childSnapshot.val();
+        records.push(data);
+      });
+      setRows(records);
     });
-  }
+  };
 
   const filterData = (v) => {
     if (v) {
-      setRows([v])
+      setRows([v]);
     } else {
-      getData()
+      getData();
     }
   };
 
-  const { logout } = UserAuth()
-  const navigate = useNavigate()
+  const { logout } = UserAuth();
+  const navigate = useNavigate();
 
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(true);
   const handleNavbar = () => {
-    setOpen(!open)
-  }
+    setOpen(!open);
+  };
 
-  const MySwal = withReactContent(Swal)
+  const MySwal = withReactContent(Swal);
   const handleLogout = async (e) => {
     try {
-      await logout()
-      navigate('/login')
+      await logout();
+      navigate("/login");
       MySwal.fire({
         title: <p>Logout</p>,
-        text: 'Logout successful',
-        icon: 'success',
+        text: "Logout successful",
+        icon: "success",
       });
     } catch (e) {
       MySwal.fire({
         title: <p>Error!</p>,
         text: e.message,
-        icon: 'error',
+        icon: "error",
       });
     }
-  }
+  };
 
   return (
-    <div className='flex'>
+    <div className="flex">
       <SideNavBar open={open} />
-      <main className='py-4 px-12 flex-1 overflow-auto'>
-        <div className='grid grid-cols-1 gap-2 mb-6 lg:grid-cols-1'>
-          <AppBar position="static" color='transparent'>
+      <main className="py-4 px-12 flex-1 overflow-auto">
+        <div className="grid grid-cols-1 gap-2 mb-6 lg:grid-cols-1">
+          <AppBar position="static" color="transparent">
             <Toolbar>
               <IconButton
                 onClick={handleNavbar}
@@ -211,14 +210,21 @@ function ListOfIds() {
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 List of IDs
               </Typography>
-              <IconButton onClick={handleLogout} color="primary" aria-label="logout" component="label">
+              <IconButton
+                onClick={handleLogout}
+                color="primary"
+                aria-label="logout"
+                component="label"
+              >
                 <LogoutIcon />
               </IconButton>
             </Toolbar>
           </AppBar>
-          <div className='p-0'>
-            <div className='mt-10 sm:mt-0 w-full'>
-              <Paper sx={{ width: '100%', overflow: 'hidden', marginTop: '20px' }}>
+          <div className="p-0">
+            <div className="mt-10 sm:mt-0 w-full">
+              <Paper
+                sx={{ width: "100%", overflow: "hidden", marginTop: "20px" }}
+              >
                 <Typography
                   gutterBottom
                   variant="h5"
@@ -238,7 +244,11 @@ function ListOfIds() {
                     onChange={(e, v) => filterData(v)}
                     getOptionLabel={(rows) => rows.FirstName || ""}
                     renderInput={(params) => (
-                      <TextField {...params} size="small" label="Search People" />
+                      <TextField
+                        {...params}
+                        size="small"
+                        label="Search People"
+                      />
                     )}
                   />
                   <Typography
@@ -254,91 +264,91 @@ function ListOfIds() {
                       <TableRow>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px', fontWeight: 'bold' }}
+                          style={{ minWidth: "180px", fontWeight: "bold" }}
                         >
                           ID Type
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px', fontWeight: 'bold' }}
+                          style={{ minWidth: "180px", fontWeight: "bold" }}
                         >
                           First Name
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px', fontWeight: 'bold' }}
+                          style={{ minWidth: "180px", fontWeight: "bold" }}
                         >
                           Middle Name
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px', fontWeight: 'bold' }}
+                          style={{ minWidth: "180px", fontWeight: "bold" }}
                         >
                           Surname
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px', fontWeight: 'bold' }}
+                          style={{ minWidth: "180px", fontWeight: "bold" }}
                         >
                           Suffix
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px', fontWeight: 'bold' }}
+                          style={{ minWidth: "180px", fontWeight: "bold" }}
                         >
                           Civil Status
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px', fontWeight: 'bold' }}
+                          style={{ minWidth: "180px", fontWeight: "bold" }}
                         >
                           Date of Birth
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px', fontWeight: 'bold' }}
+                          style={{ minWidth: "180px", fontWeight: "bold" }}
                         >
                           Registration Number
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px', fontWeight: 'bold' }}
+                          style={{ minWidth: "180px", fontWeight: "bold" }}
                         >
                           Precinct Number
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px', fontWeight: 'bold' }}
+                          style={{ minWidth: "180px", fontWeight: "bold" }}
                         >
                           Valid Until
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px', fontWeight: 'bold' }}
+                          style={{ minWidth: "180px", fontWeight: "bold" }}
                         >
                           Nationality
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px', fontWeight: 'bold' }}
+                          style={{ minWidth: "180px", fontWeight: "bold" }}
                         >
                           Address
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px', fontWeight: 'bold' }}
+                          style={{ minWidth: "180px", fontWeight: "bold" }}
                         >
                           Photo
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px', fontWeight: 'bold' }}
+                          style={{ minWidth: "180px", fontWeight: "bold" }}
                         >
                           Signature
                         </TableCell>
                         <TableCell
                           key="left"
-                          style={{ minWidth: '180px', fontWeight: 'bold' }}
+                          style={{ minWidth: "180px", fontWeight: "bold" }}
                         >
                           Action
                         </TableCell>
@@ -346,25 +356,27 @@ function ListOfIds() {
                     </TableHead>
                     <TableBody>
                       {rows
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .slice(
+                          page * rowsPerPage,
+                          page * rowsPerPage + rowsPerPage
+                        )
                         .map((row) => {
                           return (
-                            <TableRow hover role="checkbox" tabIndex={-1} key={row.ID}>
-                              <TableCell align="left">
-                                {row.IDType}
-                              </TableCell>
+                            <TableRow
+                              hover
+                              role="checkbox"
+                              tabIndex={-1}
+                              key={row.ID}
+                            >
+                              <TableCell align="left">{row.IDType}</TableCell>
                               <TableCell align="left">
                                 {row.FirstName}
                               </TableCell>
                               <TableCell align="left">
                                 {row.MiddleName}
                               </TableCell>
-                              <TableCell align="left">
-                                {row.Surname}
-                              </TableCell>
-                              <TableCell align="left">
-                                {row.Suffix}
-                              </TableCell>
+                              <TableCell align="left">{row.Surname}</TableCell>
+                              <TableCell align="left">{row.Suffix}</TableCell>
                               <TableCell align="left">
                                 {row.CivilStatus}
                               </TableCell>
@@ -383,46 +395,54 @@ function ListOfIds() {
                               <TableCell align="left">
                                 {row.Nationality}
                               </TableCell>
+                              <TableCell align="left">{row.Address}</TableCell>
                               <TableCell align="left">
-                                {row.Address}
+                                {
+                                  <img
+                                    src={row.Photo}
+                                    className="table-photo"
+                                    alt="user-pic"
+                                  />
+                                }
                               </TableCell>
                               <TableCell align="left">
-                                {<img src={row.Photo} className='table-photo' alt='user-pic' />}
-                              </TableCell>
-                              <TableCell align="left">
-                                {<img src={row.SigniturePhoto} className='table-photo' alt='signature' />}
+                                {
+                                  <img
+                                    src={row.SigniturePhoto}
+                                    className="table-photo"
+                                    alt="signature"
+                                  />
+                                }
                               </TableCell>
                               <TableCell align="left">
                                 <Stack spacing={2} direction="row">
-                                  {
-                                    row.isPrinted === 'Printed' ? (
-                                      <>
-                                        <LaunchIcon
-                                          style={{
-                                            fontSize: "20px",
-                                            color: "blue",
-                                            cursor: "pointer",
-                                          }}
-                                          className="cursor-pointer"
+                                  {row.isPrinted === "Printed" ? (
+                                    <>
+                                      <LaunchIcon
+                                        style={{
+                                          fontSize: "20px",
+                                          color: "blue",
+                                          cursor: "pointer",
+                                        }}
+                                        className="cursor-pointer"
                                         // onClick={() => editUser(row.id)}
-                                        />
-                                      </>
-                                    ) : (
-                                      <>
-                                        <PrintIcon
-                                          style={{
-                                            fontSize: "20px",
-                                            color: "green",
-                                            cursor: "pointer",
-                                          }}
-                                          className="cursor-pointer"
-                                          onClick={() => {
-                                            handlePrint(row.ID)
-                                          }}
-                                        />
-                                      </>
-                                    )
-                                  }
+                                      />
+                                    </>
+                                  ) : (
+                                    <>
+                                      <PrintIcon
+                                        style={{
+                                          fontSize: "20px",
+                                          color: "green",
+                                          cursor: "pointer",
+                                        }}
+                                        className="cursor-pointer"
+                                        onClick={() => {
+                                          handlePrint(row.ID);
+                                        }}
+                                      />
+                                    </>
+                                  )}
                                   <DeleteIcon
                                     style={{
                                       fontSize: "20px",
@@ -454,9 +474,7 @@ function ListOfIds() {
             </div>
             {showModal ? (
               <>
-                <div
-                  className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
-                >
+                <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
                   <div className="relative w-auto my-6 mx-auto max-w-7xl">
                     {/*content*/}
                     <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
@@ -476,86 +494,198 @@ function ListOfIds() {
                       </div>
                       {/*body*/}
                       <div className="relative p-6 flex-auto">
-                        <div className='grid grid-cols-2 p-0 gap-4' ref={idCardRef} id='id-side'>
+                        <div
+                          className="grid grid-cols-2 p-0 gap-4"
+                          ref={idCardRef}
+                          id="id-side"
+                        >
                           {/*id front*/}
-                          <div className='grid grid-cols-1 p-0' id='id-front'>
-                            <div className={`${records.IDType === 'Green Card' ? 'id-card border' : records.IDType === 'Yellow Card' ? 'id-card-yellow border' : records.IDType === 'White Card' ? 'id-card-white border' : 'id-card border'} grid grid-rows-8 gap-0 p-0`}>
-                              <div className='grid grid-cols-6 row-span-1 py-2'>
-                                <img className='blgu-logo col-span-1' src={blguLogo} alt='' />
-                                <div className='flex flex-col p-0 mt-1 col-span-5'>
-                                  <span className={`${records.IDType === 'Green Card' ? 'text-hdr' : records.IDType === 'Yellow Card' ? 'text-hdr-black' : records.IDType === 'White Card' ? 'text-hdr-black' : 'text-hdr'}`}>Rebuplic of the Philippines</span>
-                                  <span className={`${records.IDType === 'Green Card' ? 'text-hdr' : records.IDType === 'Yellow Card' ? 'text-hdr-black' : records.IDType === 'White Card' ? 'text-hdr-black' : 'text-hdr'}`}>Province of Antique</span>
-                                  <span className={`${records.IDType === 'Green Card' ? 'text-hdr' : records.IDType === 'Yellow Card' ? 'text-hdr-black' : records.IDType === 'White Card' ? 'text-hdr-black' : 'text-hdr'}`}>Municipality of Caluya</span>
-                                  <span className={`${records.IDType === 'Green Card' ? 'text-hdr' : records.IDType === 'Yellow Card' ? 'text-hdr-black' : records.IDType === 'White Card' ? 'text-hdr-black' : 'text-hdr'}`}>BARANGAY SEMIRARA</span>
+                          <div className="grid grid-cols-1 p-0" id="id-front">
+                            <div
+                              className={`${
+                                records.IDType === "Green Card"
+                                  ? "id-card border"
+                                  : records.IDType === "Yellow Card"
+                                  ? "id-card-yellow border"
+                                  : records.IDType === "White Card"
+                                  ? "id-card-white border"
+                                  : "id-card border"
+                              } grid grid-rows-8 gap-0 p-0`}
+                            >
+                              <div className="grid grid-cols-6 row-span-1 py-2">
+                                <img
+                                  className="blgu-logo col-span-1"
+                                  src={blguLogo}
+                                  alt=""
+                                />
+                                <div className="flex flex-col p-0 mt-1 col-span-5">
+                                  <span
+                                    className={`${
+                                      records.IDType === "Green Card"
+                                        ? "text-hdr"
+                                        : records.IDType === "Yellow Card"
+                                        ? "text-hdr-black"
+                                        : records.IDType === "White Card"
+                                        ? "text-hdr-black"
+                                        : "text-hdr"
+                                    }`}
+                                  >
+                                    Rebuplic of the Philippines
+                                  </span>
+                                  <span
+                                    className={`${
+                                      records.IDType === "Green Card"
+                                        ? "text-hdr"
+                                        : records.IDType === "Yellow Card"
+                                        ? "text-hdr-black"
+                                        : records.IDType === "White Card"
+                                        ? "text-hdr-black"
+                                        : "text-hdr"
+                                    }`}
+                                  >
+                                    Province of Antique
+                                  </span>
+                                  <span
+                                    className={`${
+                                      records.IDType === "Green Card"
+                                        ? "text-hdr"
+                                        : records.IDType === "Yellow Card"
+                                        ? "text-hdr-black"
+                                        : records.IDType === "White Card"
+                                        ? "text-hdr-black"
+                                        : "text-hdr"
+                                    }`}
+                                  >
+                                    Municipality of Caluya
+                                  </span>
+                                  <span
+                                    className={`${
+                                      records.IDType === "Green Card"
+                                        ? "text-hdr"
+                                        : records.IDType === "Yellow Card"
+                                        ? "text-hdr-black"
+                                        : records.IDType === "White Card"
+                                        ? "text-hdr-black"
+                                        : "text-hdr"
+                                    }`}
+                                  >
+                                    BARANGAY SEMIRARA
+                                  </span>
                                 </div>
                               </div>
-                              <h2 className='id-title row-span-2 mb-2'>Barangay Identification Card</h2>
-                              <div className='grid grid-cols-12 row-span-5 p-0 px-5 gap-2'>
-                                <div className='grid grid-rows-5 col-span-3 gap-2'>
-                                  <div className='id-pic row-span-2'>
-                                    <img src={records.Photo} alt='' className='id-pic-user' />
+                              <h2 className="id-title row-span-2 mb-2">
+                                Barangay Identification Card
+                              </h2>
+                              <div className="grid grid-cols-12 row-span-5 p-0 px-5 gap-2">
+                                <div className="grid grid-rows-5 col-span-3 gap-2">
+                                  <div className="id-pic row-span-2">
+                                    <img
+                                      src={records.Photo}
+                                      alt=""
+                                      className="id-pic-user"
+                                    />
                                   </div>
-                                  <div className='flex flex-col gap-y-1 row-span-4 items-center'>
-                                    <img src={records.SigniturePhoto} alt='' className='sign-user' />
-                                    <p className='label-id'>Signature</p>
+                                  <div className="flex flex-col gap-y-1 row-span-4 items-center">
+                                    <img
+                                      src={records.SigniturePhoto}
+                                      alt=""
+                                      className="sign-user"
+                                    />
+                                    <p className="label-id">Signature</p>
                                   </div>
                                 </div>
 
-                                <div className='flex flex-col p-0 px-2 gap-1 gap-y-0 col-span-9'>
-                                  <div className='grid grid-cols-4 p-0'>
-                                    <p className='label-id'>First Name</p>
-                                    <p className='label-id'>Middle Name</p>
-                                    <p className='label-id'>Surname</p>
-                                    <p className='label-id'>Suffix</p>
+                                <div className="flex flex-col p-0 px-2 gap-1 gap-y-0 col-span-9">
+                                  <div className="grid grid-cols-4 p-0">
+                                    <p className="label-id">First Name</p>
+                                    <p className="label-id">Middle Name</p>
+                                    <p className="label-id">Surname</p>
+                                    <p className="label-id">Suffix</p>
                                   </div>
-                                  <div className='grid grid-cols-4 p-0'>
+                                  <div className="grid grid-cols-4 p-0">
                                     {/* <p className='label-id-data'>{fname + " " + mname + " " + sname + " " + suffix}</p> */}
-                                    <p className='label-id-data'>{records.FirstName}</p>
-                                    <p className='label-id-data'>{records.MiddleName}</p>
-                                    <p className='label-id-data'>{records.Surname}</p>
-                                    <p className='label-id-data'>{records.Suffix}</p>
+                                    <p className="label-id-data">
+                                      {records.FirstName}
+                                    </p>
+                                    <p className="label-id-data">
+                                      {records.MiddleName}
+                                    </p>
+                                    <p className="label-id-data">
+                                      {records.Surname}
+                                    </p>
+                                    <p className="label-id-data">
+                                      {records.Suffix}
+                                    </p>
                                   </div>
                                   {/* <p className='label-id'>{fname + ' ' + mname + ' ' + sname + ' ' + suffix}</p> */}
                                   {/* 2nd */}
-                                  <div className='flex flex-col p-0 gap-1 gap-y-0'>
-                                    <div className='grid grid-cols-3 p-0'>
-                                      <p className='label-id'>Date of Birth</p>
-                                      <p className='label-id'>Civil Status</p>
-                                      <p className='label-id'>Nationality</p>
+                                  <div className="flex flex-col p-0 gap-1 gap-y-0">
+                                    <div className="grid grid-cols-3 p-0">
+                                      <p className="label-id">Date of Birth</p>
+                                      <p className="label-id">Civil Status</p>
+                                      <p className="label-id">Nationality</p>
                                     </div>
-                                    <div className='grid grid-cols-3 p-0'>
-                                      <p className='label-id-data'>{records.DateOfBirth}</p>
-                                      <p className='label-id-data'>{records.CivilStatus}</p>
-                                      <p className='label-id-data'>{records.Nationality}</p>
+                                    <div className="grid grid-cols-3 p-0">
+                                      <p className="label-id-data">
+                                        {records.DateOfBirth}
+                                      </p>
+                                      <p className="label-id-data">
+                                        {records.CivilStatus}
+                                      </p>
+                                      <p className="label-id-data">
+                                        {records.Nationality}
+                                      </p>
                                     </div>
                                   </div>
                                   {/* 3rd */}
-                                  <div className='flex flex-col p-0 gap-0 gap-y-0'>
-                                    <div className='grid grid-cols-5 p-0'>
-                                      <p className='label-id col-span-2'>Registration Number</p>
-                                      <p className='label-id col-span-2'>Precinct Number</p>
-                                      <p className='label-id col-span-1'>Valid Until</p>
+                                  <div className="flex flex-col p-0 gap-0 gap-y-0">
+                                    <div className="grid grid-cols-5 p-0">
+                                      <p className="label-id col-span-2">
+                                        Registration Number
+                                      </p>
+                                      <p className="label-id col-span-2">
+                                        Precinct Number
+                                      </p>
+                                      <p className="label-id col-span-1">
+                                        Valid Until
+                                      </p>
                                     </div>
-                                    <div className='grid grid-cols-5 p-0'>
-                                      <p className='label-id-data col-span-2'>{records.RegistrationNumber}</p>
-                                      <p className='label-id-data col-span-2'>{records.PrecinctNumber}</p>
-                                      <p className='label-id-data col-span-1'>{records.ValidUntil}</p>
+                                    <div className="grid grid-cols-5 p-0">
+                                      <p className="label-id-data col-span-2">
+                                        {records.RegistrationNumber}
+                                      </p>
+                                      <p className="label-id-data col-span-2">
+                                        {records.PrecinctNumber}
+                                      </p>
+                                      <p className="label-id-data col-span-1">
+                                        {records.ValidUntil}
+                                      </p>
                                     </div>
                                   </div>
                                   {/* 4rd */}
-                                  <div className='flex flex-col p-0 gap-1 gap-y-0'>
-                                    <p className='label-id'>Address</p>
-                                    <p className='label-id-data col-span-2'>{records.Address}</p>
+                                  <div className="flex flex-col p-0 gap-1 gap-y-0">
+                                    <p className="label-id">Address</p>
+                                    <p className="label-id-data col-span-2">
+                                      {records.Address}
+                                    </p>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                           {/*id back*/}
-                          <div className='grid grid-cols-1 p-0' id='id-back'>
-                            <div className={`${records.IDType === 'Green Card' ? 'id-card-back border' : records.IDType === 'Yellow Card' ? 'id-card-back-yellow border' : records.IDType === 'White Card' ? 'id-card-back-white border' : 'id-card-back border'} grid grid-rows-8 gap-0 p-0`}>
-
-                            </div>
+                          <div className="grid grid-cols-1 p-0" id="id-back">
+                            <div
+                              className={`${
+                                records.IDType === "Green Card"
+                                  ? "id-card-back border"
+                                  : records.IDType === "Yellow Card"
+                                  ? "id-card-back-yellow border"
+                                  : records.IDType === "White Card"
+                                  ? "id-card-back-white border"
+                                  : "id-card-back border"
+                              } grid grid-rows-8 gap-0 p-0`}
+                            ></div>
                           </div>
                         </div>
                       </div>
@@ -565,9 +695,8 @@ function ListOfIds() {
                           className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                           type="button"
                           onClick={() => {
-                            setShowModal(false)
-                          }
-                          }
+                            setShowModal(false);
+                          }}
                         >
                           Close
                         </button>
@@ -596,7 +725,7 @@ function ListOfIds() {
         </div>
       </main>
     </div>
-  )
+  );
 }
 
-export default ListOfIds
+export default ListOfIds;
