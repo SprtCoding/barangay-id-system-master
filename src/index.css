@@ -111,6 +111,11 @@ main {
   height: 60px;
 }
 
+.logo2 {
+  width: 90%;
+  height: 100px;
+}
+
 .id-pic {
   padding: 0;
   width: 120px;

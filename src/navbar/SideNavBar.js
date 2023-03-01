@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import blgulogo from "../assets/blgulogo.png";
 import kapLogo from "../assets/logokap.png";
+import blgulogoofficial from "../assets/brgylogowhite.png";
 
 const SideNavBar = ({ open }) => {
   const { logout } = UserAuth();
@@ -104,17 +105,22 @@ const SideNavBar = ({ open }) => {
             </li>
           </ul>
           <div className="static">
-            <div className="absolute bottom-0 right-0 p-4">
+            <div className="absolute bottom-0 right-0 p-4 w-full">
               <div className="flex flex-col h-full gap-x-1 items-end">
                 <img src={kapLogo} className="logo1" alt="" />
-                <h1
+                {/* <h1
                   className={`${
                     !open && "scale-0"
                   } text-white origin-left font-bold text-sm duration-300 title1`}
                 >
                   Barangay ID's
-                </h1>
+                </h1> */}
               </div>
+              <img
+                src={blgulogoofficial}
+                className={`${!open && "hidden"} logo2`}
+                alt=""
+              />
             </div>
           </div>
         </div>

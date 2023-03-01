@@ -674,6 +674,7 @@ function Dashboard() {
                               </label>
                               <input
                                 type="text"
+                                placeholder="First Name"
                                 className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400"
                                 value={fname}
                                 onChange={handleFName}
@@ -686,6 +687,7 @@ function Dashboard() {
                               </label>
                               <input
                                 type="text"
+                                placeholder="Middle Name"
                                 className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400"
                                 value={mname}
                                 onChange={handleMName}
@@ -698,6 +700,7 @@ function Dashboard() {
                               </label>
                               <input
                                 type="text"
+                                placeholder="Surname"
                                 className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400"
                                 value={sname}
                                 onChange={handleSName}
@@ -710,6 +713,7 @@ function Dashboard() {
                               </label>
                               <input
                                 type="text"
+                                placeholder="Suffix"
                                 className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400"
                                 value={suffix}
                                 onChange={handleSuffix}
@@ -781,6 +785,7 @@ function Dashboard() {
                             </label>
                             <input
                               type="text"
+                              placeholder="Registration Number"
                               className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400"
                               value={regNo}
                               onChange={handleRegNo}
@@ -793,6 +798,7 @@ function Dashboard() {
                             </label>
                             <input
                               type="text"
+                              placeholder="Precinct Number"
                               className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400"
                               value={preNo}
                               onChange={handlePreNo}
@@ -825,6 +831,7 @@ function Dashboard() {
                             </label>
                             <input
                               type="text"
+                              placeholder="Nationality"
                               className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400"
                               value={nationality}
                               onChange={handleNationality}
@@ -837,6 +844,7 @@ function Dashboard() {
                             </label>
                             <input
                               type="text"
+                              placeholder="Address"
                               className="mt-1 block w-full border-gray-300 shadow-sm focus:outline-none sm:text-sm py-2 border-b-2 border-gray-400"
                               value={address}
                               onChange={handleAddress}
