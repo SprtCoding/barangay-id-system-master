@@ -7,7 +7,7 @@ import {
 }
     from 'firebase/auth'
 import { auth } from '../../firebase'
-import { getDatabase, ref, set } from "firebase/database"
+import { getDatabase, ref, set, update } from "firebase/database"
 // import Swal from 'sweetalert2'
 // import withReactContent from 'sweetalert2-react-content'
 
@@ -22,6 +22,14 @@ export const AuthContextProvider = ({ children }) => {
 
     const logout = () => {
         return signOut(auth)
+    }
+
+    function updateUserDataSign(Id, UserImageSignUrl, setPrinted) {
+        const db = getDatabase();
+        update(ref(db, 'barangayResidentID/' + Id), {
+            SigniturePhoto: UserImageSignUrl,
+            isPrinted: setPrinted
+        })
     }
 
     function writeUserData(Id, Fname, Mname, Sname, suffix, cStatus, dob, RegNo, PreNo, validationUntil, nationality, pAddress, idType, UserImageUrl, UserImageSignUrl, setPrinted) {
@@ -57,7 +65,7 @@ export const AuthContextProvider = ({ children }) => {
     }, [])
 
     return (
-        <UserContext.Provider value={{ loginUser, user, logout, writeUserData }}>
+        <UserContext.Provider value={{ loginUser, user, logout, writeUserData, updateUserDataSign }}>
             {children}
         </UserContext.Provider>
     )

@@ -24,11 +24,15 @@ import Stack from "@mui/material/Stack";
 import LaunchIcon from "@mui/icons-material/Launch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PrintIcon from "@mui/icons-material/Print";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignature } from "@fortawesome/free-solid-svg-icons";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { getDatabase, ref, onValue, remove } from "firebase/database";
 import blguLogo from "../../assets/blgulogo.png";
 import html2canvas from "html2canvas";
+import { Clear, Save } from "@mui/icons-material";
+import SignaturePad from "react-signature-canvas";
 
 function ListOfIds() {
   //modal
@@ -40,12 +44,41 @@ function ListOfIds() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
   const [records, setRecords] = useState([]);
+  const [openSignatureModal, setOpenSignatureModal] = useState(false);
+  const [signID, setSignID] = useState();
+
+  const { updateUserDataSign } = UserAuth();
+
+  const sigCanvas = useRef();
+  const [sign, setSign] = useState("");
+  const saveSign = () => {
+    setSign(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"));
+    setOpenSignatureModal(false);
+    try {
+      updateUserDataSign(signID, sign, "Not Printed");
+    } catch (e) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: e.message,
+        icon: "error",
+      });
+    }
+  };
+
+  const clear = () => {
+    sigCanvas.current.clear();
+  };
 
   const handlePrint = (id) => {
     // setID(id)
     getDataPrint(id);
     setShowModal(true);
   };
+
+  const handleSignaturePad = (id) => {
+    setSignID(id)
+    setOpenSignatureModal(true)
+  }
 
   const getDataPrint = async (id) => {
     const db = getDatabase();
@@ -425,8 +458,24 @@ function ListOfIds() {
                                           cursor: "pointer",
                                         }}
                                         className="cursor-pointer"
-                                        // onClick={() => editUser(row.id)}
+                                      // onClick={() => editUser(row.id)}
                                       />
+                                    </>
+                                  ) : row.isPrinted === "Need Signature" ? (
+                                    <>
+                                      <FontAwesomeIcon
+                                        icon={faSignature}
+                                        style={{
+                                          fontSize: "20px",
+                                          color: "blue",
+                                          cursor: "pointer",
+                                        }}
+                                        className="cursor-pointer"
+                                        onClick={() => {
+                                          handleSignaturePad(row.ID);
+                                        }}
+                                      />
+
                                     </>
                                   ) : (
                                     <>
@@ -472,6 +521,59 @@ function ListOfIds() {
                 />
               </Paper>
             </div>
+            {openSignatureModal && (
+              <>
+                <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+                  <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                    {/*content*/}
+                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                      {/*header*/}
+                      <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                        <h3 className="text-xl font-semibold">
+                          Your Generated ID
+                        </h3>
+                        <button
+                          className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                          onClick={() => setOpenSignatureModal(false)}
+                        >
+                          <span className="bg-transparent text-black-600 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                            ×
+                          </span>
+                        </button>
+                      </div>
+                      {/*body*/}
+                      <div className="relative p-6 flex-auto">
+                        <SignaturePad
+                          ref={sigCanvas}
+                          canvasProps={{
+                            className: "sigCanvas",
+                          }}
+                          penColor="black"
+                        />
+                        <div className="grid grid-cols-2">
+                          <IconButton
+                            onClick={saveSign}
+                            color="gray"
+                            aria-label="save"
+                            component="label"
+                          >
+                            <Save />
+                          </IconButton>
+                          <IconButton
+                            onClick={clear}
+                            color="gray"
+                            aria-label="clear"
+                            component="label"
+                          >
+                            <Clear />
+                          </IconButton>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
             {showModal ? (
               <>
                 <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -502,15 +604,14 @@ function ListOfIds() {
                           {/*id front*/}
                           <div className="grid grid-cols-1 p-0" id="id-front">
                             <div
-                              className={`${
-                                records.IDType === "Green Card"
-                                  ? "id-card border"
-                                  : records.IDType === "Yellow Card"
+                              className={`${records.IDType === "Green Card"
+                                ? "id-card border"
+                                : records.IDType === "Yellow Card"
                                   ? "id-card-yellow border"
                                   : records.IDType === "White Card"
-                                  ? "id-card-white border"
-                                  : "id-card border"
-                              } grid grid-rows-8 gap-0 p-0`}
+                                    ? "id-card-white border"
+                                    : "id-card border"
+                                } grid grid-rows-8 gap-0 p-0`}
                             >
                               <div className="grid grid-cols-6 row-span-1 py-2">
                                 <img
@@ -520,54 +621,50 @@ function ListOfIds() {
                                 />
                                 <div className="flex flex-col p-0 mt-1 col-span-5">
                                   <span
-                                    className={`${
-                                      records.IDType === "Green Card"
-                                        ? "text-hdr"
-                                        : records.IDType === "Yellow Card"
+                                    className={`${records.IDType === "Green Card"
+                                      ? "text-hdr"
+                                      : records.IDType === "Yellow Card"
                                         ? "text-hdr-black"
                                         : records.IDType === "White Card"
-                                        ? "text-hdr-black"
-                                        : "text-hdr"
-                                    }`}
+                                          ? "text-hdr-black"
+                                          : "text-hdr"
+                                      }`}
                                   >
                                     Rebuplic of the Philippines
                                   </span>
                                   <span
-                                    className={`${
-                                      records.IDType === "Green Card"
-                                        ? "text-hdr"
-                                        : records.IDType === "Yellow Card"
+                                    className={`${records.IDType === "Green Card"
+                                      ? "text-hdr"
+                                      : records.IDType === "Yellow Card"
                                         ? "text-hdr-black"
                                         : records.IDType === "White Card"
-                                        ? "text-hdr-black"
-                                        : "text-hdr"
-                                    }`}
+                                          ? "text-hdr-black"
+                                          : "text-hdr"
+                                      }`}
                                   >
                                     Province of Antique
                                   </span>
                                   <span
-                                    className={`${
-                                      records.IDType === "Green Card"
-                                        ? "text-hdr"
-                                        : records.IDType === "Yellow Card"
+                                    className={`${records.IDType === "Green Card"
+                                      ? "text-hdr"
+                                      : records.IDType === "Yellow Card"
                                         ? "text-hdr-black"
                                         : records.IDType === "White Card"
-                                        ? "text-hdr-black"
-                                        : "text-hdr"
-                                    }`}
+                                          ? "text-hdr-black"
+                                          : "text-hdr"
+                                      }`}
                                   >
                                     Municipality of Caluya
                                   </span>
                                   <span
-                                    className={`${
-                                      records.IDType === "Green Card"
-                                        ? "text-hdr"
-                                        : records.IDType === "Yellow Card"
+                                    className={`${records.IDType === "Green Card"
+                                      ? "text-hdr"
+                                      : records.IDType === "Yellow Card"
                                         ? "text-hdr-black"
                                         : records.IDType === "White Card"
-                                        ? "text-hdr-black"
-                                        : "text-hdr"
-                                    }`}
+                                          ? "text-hdr-black"
+                                          : "text-hdr"
+                                      }`}
                                   >
                                     BARANGAY SEMIRARA
                                   </span>
@@ -676,15 +773,14 @@ function ListOfIds() {
                           {/*id back*/}
                           <div className="grid grid-cols-1 p-0" id="id-back">
                             <div
-                              className={`${
-                                records.IDType === "Green Card"
-                                  ? "id-card-back border"
-                                  : records.IDType === "Yellow Card"
+                              className={`${records.IDType === "Green Card"
+                                ? "id-card-back border"
+                                : records.IDType === "Yellow Card"
                                   ? "id-card-back-yellow border"
                                   : records.IDType === "White Card"
-                                  ? "id-card-back-white border"
-                                  : "id-card-back border"
-                              } grid grid-rows-8 gap-0 p-0`}
+                                    ? "id-card-back-white border"
+                                    : "id-card-back border"
+                                } grid grid-rows-8 gap-0 p-0`}
                             ></div>
                           </div>
                         </div>
