@@ -962,15 +962,14 @@ function Dashboard() {
                                   id="id-front"
                                 >
                                   <div
-                                    className={`${
-                                      idType === "Green Card"
+                                    className={`${idType === "Green Card"
                                         ? "id-card border"
                                         : idType === "Yellow Card"
-                                        ? "id-card-yellow border"
-                                        : idType === "White Card"
-                                        ? "id-card-white border"
-                                        : "id-card border"
-                                    } grid grid-rows-8 gap-0 p-0`}
+                                          ? "id-card-yellow border"
+                                          : idType === "White Card"
+                                            ? "id-card-white border"
+                                            : "id-card border"
+                                      } grid grid-rows-8 gap-0 p-0`}
                                   >
                                     <div className="grid grid-cols-6 row-span-1 py-2">
                                       <img
@@ -980,54 +979,50 @@ function Dashboard() {
                                       />
                                       <div className="flex flex-col p-0 mt-1 col-span-5">
                                         <span
-                                          className={`${
-                                            idType === "Green Card"
+                                          className={`${idType === "Green Card"
                                               ? "text-hdr"
                                               : idType === "Yellow Card"
-                                              ? "text-hdr-black"
-                                              : idType === "White Card"
-                                              ? "text-hdr-black"
-                                              : "text-hdr"
-                                          }`}
+                                                ? "text-hdr-black"
+                                                : idType === "White Card"
+                                                  ? "text-hdr-black"
+                                                  : "text-hdr"
+                                            }`}
                                         >
-                                          Rebuplic of the Philippines
+                                          Republic of the Philippines
                                         </span>
                                         <span
-                                          className={`${
-                                            idType === "Green Card"
+                                          className={`${idType === "Green Card"
                                               ? "text-hdr"
                                               : idType === "Yellow Card"
-                                              ? "text-hdr-black"
-                                              : idType === "White Card"
-                                              ? "text-hdr-black"
-                                              : "text-hdr"
-                                          }`}
+                                                ? "text-hdr-black"
+                                                : idType === "White Card"
+                                                  ? "text-hdr-black"
+                                                  : "text-hdr"
+                                            }`}
                                         >
                                           Province of Antique
                                         </span>
                                         <span
-                                          className={`${
-                                            idType === "Green Card"
+                                          className={`${idType === "Green Card"
                                               ? "text-hdr"
                                               : idType === "Yellow Card"
-                                              ? "text-hdr-black"
-                                              : idType === "White Card"
-                                              ? "text-hdr-black"
-                                              : "text-hdr"
-                                          }`}
+                                                ? "text-hdr-black"
+                                                : idType === "White Card"
+                                                  ? "text-hdr-black"
+                                                  : "text-hdr"
+                                            }`}
                                         >
                                           Municipality of Caluya
                                         </span>
                                         <span
-                                          className={`${
-                                            idType === "Green Card"
+                                          className={`${idType === "Green Card"
                                               ? "text-hdr"
                                               : idType === "Yellow Card"
-                                              ? "text-hdr-black"
-                                              : idType === "White Card"
-                                              ? "text-hdr-black"
-                                              : "text-hdr"
-                                          }`}
+                                                ? "text-hdr-black"
+                                                : idType === "White Card"
+                                                  ? "text-hdr-black"
+                                                  : "text-hdr"
+                                            }`}
                                         >
                                           BARANGAY SEMIRARA
                                         </span>
@@ -1147,15 +1142,14 @@ function Dashboard() {
                                   id="id-back"
                                 >
                                   <div
-                                    className={`${
-                                      idType === "Green Card"
+                                    className={`${idType === "Green Card"
                                         ? "id-card-back border"
                                         : idType === "Yellow Card"
-                                        ? "id-card-back-yellow border"
-                                        : idType === "White Card"
-                                        ? "id-card-back-white border"
-                                        : "id-card border"
-                                    } grid grid-rows-8 gap-0 p-0`}
+                                          ? "id-card-back-yellow border"
+                                          : idType === "White Card"
+                                            ? "id-card-back-white border"
+                                            : "id-card border"
+                                      } grid grid-rows-8 gap-0 p-0`}
                                   ></div>
                                 </div>
                               </div>

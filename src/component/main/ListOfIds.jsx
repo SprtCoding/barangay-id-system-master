@@ -630,7 +630,7 @@ function ListOfIds() {
                                           : "text-hdr"
                                       }`}
                                   >
-                                    Rebuplic of the Philippines
+                                    Republic of the Philippines
                                   </span>
                                   <span
                                     className={`${records.IDType === "Green Card"
