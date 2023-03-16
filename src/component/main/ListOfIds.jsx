@@ -46,8 +46,11 @@ function ListOfIds() {
   const [records, setRecords] = useState([]);
   const [openSignatureModal, setOpenSignatureModal] = useState(false);
   const [signID, setSignID] = useState();
+  const [isPrintedID, setIsPrintedID] = useState();
 
-  const { updateUserDataSign } = UserAuth();
+  const { updateUserDataSign, updateUserDataIsPrinted } = UserAuth();
+
+  const [isPrinted, setIsPrinted] = useState(false);
 
   const sigCanvas = useRef();
   const [sign, setSign] = useState("");
@@ -70,7 +73,7 @@ function ListOfIds() {
   };
 
   const handlePrint = (id) => {
-    // setID(id)
+    setIsPrintedID(id);
     getDataPrint(id);
     setShowModal(true);
   };
@@ -90,9 +93,32 @@ function ListOfIds() {
     });
   };
 
-  // useEffect(() => {
-  //   getDataPrint()
-  // }, []);
+  useEffect(() => {
+    window.onafterprint = () => {
+      if (isPrinted) {
+        Swal.fire({
+          title: "Printing",
+          text: "Printing is done.",
+          icon: "success",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Ok",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire("Saving Data", "Data save successfully.", "success");
+            window.location.reload();
+          }
+        });
+      } else {
+        Swal.fire({
+          title: "Printing",
+          text: "Printing was cancelled.",
+          icon: "error",
+        });
+        window.location.reload();
+      }
+      setIsPrinted(false);
+    };
+  }, [isPrinted]);
 
   const handleDownloadID = () => {
     html2canvas(idCardRef.current).then((canvas) => {
@@ -104,38 +130,52 @@ function ListOfIds() {
   };
 
   const handlePrintID = () => {
+    try {
+      updateUserDataIsPrinted(isPrintedID, "Printed");
+    } catch (e) {
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: e.message,
+        icon: "error",
+      });
+    }
     html2canvas(idCardRef.current).then((canvas) => {
       const printContent = document.querySelector(`#id-side`).innerHTML;
-      // const frontCanvas = document.getElementById('id-front')
-      // const backCanvas = document.getElementById('id-back')
       const originalContent = document.body.innerHTML;
       document.body.innerHTML = printContent;
-      // const printWindow = window.open('', 'Print', 'height = 600, width = 800')
-      // printWindow.document.write(`
-      // <html>
-      //   <head>
-      //     <title> Print ID </title>
-      //   </head>
-      //   <body>
-      //     <div>
-      //       <img scr="${frontCanvas.toDataURL()}" />
-      //     </div>
-      //     <div>
-      //       <img scr="${backCanvas.toDataURL()}" />
-      //     </div>
-      //   </body>
-      // </html>`)
       window.print();
       document.body.innerHTML = originalContent;
-      setTimeout(handleAfterPrint, 1000);
+      // Use window.matchMedia to detect when the print dialog has been closed
+      const mediaQueryList = window.matchMedia('print');
+      mediaQueryList.addListener((mql) => {
+        if (!mql.matches) {
+          // The print dialog has been closed
+          try {
+            updateUserDataIsPrinted(isPrintedID, "Not Printed");
+            setTimeout(handleAfterPrint, 5000);
+          } catch (e) {
+            MySwal.fire({
+              title: <p>Error!</p>,
+              text: e.message,
+              icon: "error",
+            });
+          }
+        }
+      });
     });
   };
+
+  // function onPrintCancel() {
+  //   Swal.fire("Print", "Print cancel.", "warning");
+  //   console.log(isPrintedID);
+  //   // Your code to execute after the print operation is completed
+  // }
 
   function handleAfterPrint() {
     if (document.hidden) {
       return;
     }
-    window.location.reload();
+    setIsPrinted(true);
   }
 
   const handleChangePage = (event, newPage) => {
@@ -692,7 +732,7 @@ function ListOfIds() {
                                   </div>
                                 </div>
 
-                                <div className="flex flex-col p-0 px-2 gap-1 gap-y-0 col-span-9">
+                                <div className="flex flex-col p-0 px-2 gap-1 gap-y-0 col-span-9 ml-4">
                                   <div className="grid grid-cols-4 p-0">
                                     <p className="label-id">First Name</p>
                                     <p className="label-id">Middle Name</p>

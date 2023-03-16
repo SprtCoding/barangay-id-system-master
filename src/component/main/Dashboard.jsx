@@ -58,50 +58,14 @@ function Dashboard() {
     setOpenModal(true);
   };
 
-  // const componentDidMount = () => {
-  //   const vendorId = 1234; // Your signature pad vendor ID
-  //   const productId = 5678; // Your signature pad product ID
-
-  //   require('usb-detection').startMonitoring();
-
-  //   require('usb-detection').on('add', (device) => {
-  //     if (device.vendorId === vendorId && device.productId === productId) {
-  //       idCardRef.clear();
-  //       idCardRef.off();
-  //       idCardRef.on();
-  //     }
-  //   });
-  // }
-
-  // const componentWillUnmount = () => {
-  //   require('usb-detection').stopMonitoring();
-  // }
-
   const handlePrintID = () => {
-    setIsPrinted(true);
     html2canvas(idCardRef.current).then((canvas) => {
       const printContent = document.querySelector(`#id-side`).innerHTML;
-      // const frontCanvas = document.getElementById('id-front')
-      // const backCanvas = document.getElementById('id-back')
       const originalContent = document.body.innerHTML;
       document.body.innerHTML = printContent;
-      // const printWindow = window.open('', 'Print', 'height = 600, width = 800')
-      // printWindow.document.write(`
-      // <html>
-      //   <head>
-      //     <title> Print ID </title>
-      //   </head>
-      //   <body>
-      //     <div>
-      //       <img scr="${frontCanvas.toDataURL()}" />
-      //     </div>
-      //     <div>
-      //       <img scr="${backCanvas.toDataURL()}" />
-      //     </div>
-      //   </body>
-      // </html>`)
       window.print();
       document.body.innerHTML = originalContent;
+      setIsPrinted(true);
       setTimeout(handleAfterPrint, 1000);
     });
   };
@@ -118,6 +82,7 @@ function Dashboard() {
         }).then((result) => {
           if (result.isConfirmed) {
             Swal.fire("Saving Data", "Data save successfully.", "success");
+            window.location.reload();
           }
         });
       } else {
@@ -126,6 +91,7 @@ function Dashboard() {
           text: "Printing was cancelled.",
           icon: "error",
         });
+        window.location.reload();
       }
       setIsPrinted(false);
     };
@@ -296,7 +262,7 @@ function Dashboard() {
     if (document.hidden) {
       return;
     }
-    window.location.reload();
+    setIsPrinted(false);
   }
 
   const { logout } = UserAuth();
@@ -963,12 +929,12 @@ function Dashboard() {
                                 >
                                   <div
                                     className={`${idType === "Green Card"
-                                        ? "id-card border"
-                                        : idType === "Yellow Card"
-                                          ? "id-card-yellow border"
-                                          : idType === "White Card"
-                                            ? "id-card-white border"
-                                            : "id-card border"
+                                      ? "id-card border"
+                                      : idType === "Yellow Card"
+                                        ? "id-card-yellow border"
+                                        : idType === "White Card"
+                                          ? "id-card-white border"
+                                          : "id-card border"
                                       } grid grid-rows-8 gap-0 p-0`}
                                   >
                                     <div className="grid grid-cols-6 row-span-1 py-2">
@@ -980,48 +946,48 @@ function Dashboard() {
                                       <div className="flex flex-col p-0 mt-1 col-span-5">
                                         <span
                                           className={`${idType === "Green Card"
-                                              ? "text-hdr"
-                                              : idType === "Yellow Card"
+                                            ? "text-hdr"
+                                            : idType === "Yellow Card"
+                                              ? "text-hdr-black"
+                                              : idType === "White Card"
                                                 ? "text-hdr-black"
-                                                : idType === "White Card"
-                                                  ? "text-hdr-black"
-                                                  : "text-hdr"
+                                                : "text-hdr"
                                             }`}
                                         >
                                           Republic of the Philippines
                                         </span>
                                         <span
                                           className={`${idType === "Green Card"
-                                              ? "text-hdr"
-                                              : idType === "Yellow Card"
+                                            ? "text-hdr"
+                                            : idType === "Yellow Card"
+                                              ? "text-hdr-black"
+                                              : idType === "White Card"
                                                 ? "text-hdr-black"
-                                                : idType === "White Card"
-                                                  ? "text-hdr-black"
-                                                  : "text-hdr"
+                                                : "text-hdr"
                                             }`}
                                         >
                                           Province of Antique
                                         </span>
                                         <span
                                           className={`${idType === "Green Card"
-                                              ? "text-hdr"
-                                              : idType === "Yellow Card"
+                                            ? "text-hdr"
+                                            : idType === "Yellow Card"
+                                              ? "text-hdr-black"
+                                              : idType === "White Card"
                                                 ? "text-hdr-black"
-                                                : idType === "White Card"
-                                                  ? "text-hdr-black"
-                                                  : "text-hdr"
+                                                : "text-hdr"
                                             }`}
                                         >
                                           Municipality of Caluya
                                         </span>
                                         <span
                                           className={`${idType === "Green Card"
-                                              ? "text-hdr"
-                                              : idType === "Yellow Card"
+                                            ? "text-hdr"
+                                            : idType === "Yellow Card"
+                                              ? "text-hdr-black"
+                                              : idType === "White Card"
                                                 ? "text-hdr-black"
-                                                : idType === "White Card"
-                                                  ? "text-hdr-black"
-                                                  : "text-hdr"
+                                                : "text-hdr"
                                             }`}
                                         >
                                           BARANGAY SEMIRARA
@@ -1050,7 +1016,7 @@ function Dashboard() {
                                         </div>
                                       </div>
 
-                                      <div className="flex flex-col p-0 px-2 gap-1 gap-y-0 col-span-9">
+                                      <div className="flex flex-col p-0 px-2 gap-1 gap-y-0 col-span-9 ml-4">
                                         <div className="grid grid-cols-4 p-0">
                                           <p className="label-id">First Name</p>
                                           <p className="label-id">
@@ -1143,12 +1109,12 @@ function Dashboard() {
                                 >
                                   <div
                                     className={`${idType === "Green Card"
-                                        ? "id-card-back border"
-                                        : idType === "Yellow Card"
-                                          ? "id-card-back-yellow border"
-                                          : idType === "White Card"
-                                            ? "id-card-back-white border"
-                                            : "id-card border"
+                                      ? "id-card-back border"
+                                      : idType === "Yellow Card"
+                                        ? "id-card-back-yellow border"
+                                        : idType === "White Card"
+                                          ? "id-card-back-white border"
+                                          : "id-card border"
                                       } grid grid-rows-8 gap-0 p-0`}
                                   ></div>
                                 </div>

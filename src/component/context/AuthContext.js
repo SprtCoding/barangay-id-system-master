@@ -32,6 +32,13 @@ export const AuthContextProvider = ({ children }) => {
         })
     }
 
+    function updateUserDataIsPrinted(Id, setPrinted) {
+        const db = getDatabase();
+        update(ref(db, 'barangayResidentID/' + Id), {
+            isPrinted: setPrinted
+        })
+    }
+
     function writeUserData(Id, Fname, Mname, Sname, suffix, cStatus, dob, RegNo, PreNo, validationUntil, nationality, pAddress, idType, UserImageUrl, UserImageSignUrl, setPrinted) {
         const db = getDatabase();
         set(ref(db, 'barangayResidentID/' + Id), {
@@ -65,7 +72,7 @@ export const AuthContextProvider = ({ children }) => {
     }, [])
 
     return (
-        <UserContext.Provider value={{ loginUser, user, logout, writeUserData, updateUserDataSign }}>
+        <UserContext.Provider value={{ loginUser, user, logout, writeUserData, updateUserDataSign, updateUserDataIsPrinted }}>
             {children}
         </UserContext.Provider>
     )

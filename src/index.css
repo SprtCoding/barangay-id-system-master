@@ -58,19 +58,21 @@ main {
 
 .text-hdr {
   font-family: 'Baskerville Old Face Regular';
-  letter-spacing: 0.2;
-  line-height: 15px;
+  letter-spacing: 1;
+  line-height: 12px;
   font-style: italic;
-  font-size: 12px;
+  font-weight: bold;
+  font-size: 10px;
   color: white;
 }
 
 .text-hdr-black {
   font-family: 'Baskerville Old Face Regular';
-  letter-spacing: 0.2;
-  line-height: 15px;
+  letter-spacing: 1;
+  line-height: 12px;
   font-style: italic;
-  font-size: 12px;
+  font-weight: bold;
+  font-size: 10px;
   color: black;
 }
 
@@ -80,20 +82,20 @@ main {
   font-style: italic;
   text-align: center;
   color: green;
-  font-size: 24px;
+  font-size: 22px;
   padding: 0;
   margin-top: -10px;
 }
 
 .label-id {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 800;
   font-style: italic;
 }
 
 .label-id-data {
   font-family: Arial, Helvetica, serif;
-  font-size: 11.5px;
+  font-size: 9px;
   font-weight: 600;
   text-transform: uppercase;
   border: none;
@@ -129,9 +131,9 @@ main {
 }
 
 .sign-user {
-  margin-top: 10px;
+  margin-top: -2px;
   width: 45px;
-  height: 27px;
+  height: 23px;
 }
 
 .id-card {
@@ -139,8 +141,8 @@ main {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: 368px;
-  width: 552px;
+  height: 307px;
+  width: 496px;
 }
 
 .id-card-yellow {
@@ -148,8 +150,8 @@ main {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: 368px;
-  width: 552px;
+  height: 307px;
+  width: 496px;
 }
 
 .id-card-white {
@@ -157,8 +159,8 @@ main {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: 368px;
-  width: 552px;
+  height: 307px;
+  width: 496px;
 }
 
 .id-card-back {
@@ -166,8 +168,8 @@ main {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: 368px;
-  width: 552px;
+  height: 307px;
+  width: 496px;
 }
 
 .id-card-back-yellow {
@@ -175,8 +177,8 @@ main {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: 368px;
-  width: 552px;
+  height: 307px;
+  width: 496px;
 }
 
 .id-card-back-white {
@@ -184,13 +186,13 @@ main {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: 368px;
-  width: 552px;
+  height: 307px;
+  width: 496px;
 }
 
 .blgu-logo {
   width: 85px;
-  height: 75px;
+  height: 65px;
 }
 
 .table-photo {
