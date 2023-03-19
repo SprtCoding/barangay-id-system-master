@@ -33,12 +33,13 @@ import blguLogo from "../../assets/blgulogo.png";
 import html2canvas from "html2canvas";
 import { Clear, Save } from "@mui/icons-material";
 import SignaturePad from "react-signature-canvas";
+import ReactToPrint from 'react-to-print';
 
 function ListOfIds() {
   //modal
   const [showModal, setShowModal] = useState(false);
 
-  const idCardRef = useRef(null);
+  const componentRef1 = useRef();
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -50,7 +51,203 @@ function ListOfIds() {
 
   const { updateUserDataSign, updateUserDataIsPrinted } = UserAuth();
 
-  const [isPrinted, setIsPrinted] = useState(false);
+  // const [isPrinted, setIsPrinted] = useState(false);
+
+  function Component1() {
+    return (
+      <div>
+        {/*id front*/}
+        <div className="grid grid-cols-1 p-0" id="id-front">
+          <div
+            className={`${records.IDType === "Green Card"
+              ? "id-card border"
+              : records.IDType === "Yellow Card"
+                ? "id-card-yellow border"
+                : records.IDType === "White Card"
+                  ? "id-card-white border"
+                  : "id-card border"
+              } grid grid-rows-8 gap-0 p-0`}
+          >
+            <div className="grid grid-cols-6 row-span-1 py-2">
+              <img
+                className="blgu-logo col-span-1"
+                src={blguLogo}
+                alt=""
+              />
+              <div className="flex flex-col p-0 mt-1 col-span-5">
+                <span
+                  className={`${records.IDType === "Green Card"
+                    ? "text-hdr"
+                    : records.IDType === "Yellow Card"
+                      ? "text-hdr-black"
+                      : records.IDType === "White Card"
+                        ? "text-hdr-black"
+                        : "text-hdr"
+                    }`}
+                >
+                  Republic of the Philippines
+                </span>
+                <span
+                  className={`${records.IDType === "Green Card"
+                    ? "text-hdr"
+                    : records.IDType === "Yellow Card"
+                      ? "text-hdr-black"
+                      : records.IDType === "White Card"
+                        ? "text-hdr-black"
+                        : "text-hdr"
+                    }`}
+                >
+                  Province of Antique
+                </span>
+                <span
+                  className={`${records.IDType === "Green Card"
+                    ? "text-hdr"
+                    : records.IDType === "Yellow Card"
+                      ? "text-hdr-black"
+                      : records.IDType === "White Card"
+                        ? "text-hdr-black"
+                        : "text-hdr"
+                    }`}
+                >
+                  Municipality of Caluya
+                </span>
+                <span
+                  className={`${records.IDType === "Green Card"
+                    ? "text-hdr"
+                    : records.IDType === "Yellow Card"
+                      ? "text-hdr-black"
+                      : records.IDType === "White Card"
+                        ? "text-hdr-black"
+                        : "text-hdr"
+                    }`}
+                >
+                  BARANGAY SEMIRARA
+                </span>
+              </div>
+            </div>
+            <h2 className="id-title row-span-2 mb-2">
+              Barangay Identification Card
+            </h2>
+            <div className="grid grid-cols-12 row-span-5 p-0 px-5 gap-2">
+              <div className="grid grid-rows-5 col-span-3 gap-2">
+                <div className="id-pic row-span-2">
+                  <img
+                    src={records.Photo}
+                    alt=""
+                    className="id-pic-user"
+                  />
+                </div>
+                <div className="flex flex-col gap-y-1 row-span-4 items-center">
+                  <img
+                    src={records.SigniturePhoto}
+                    alt=""
+                    className="sign-user"
+                  />
+                  <p className="label-id">Signature</p>
+                </div>
+              </div>
+
+              <div className="flex flex-col p-0 px-2 gap-1 gap-y-0 col-span-9 ml-4">
+                <div className="grid grid-cols-4 p-0">
+                  <p className="label-id">First Name</p>
+                  <p className="label-id">Middle Name</p>
+                  <p className="label-id">Surname</p>
+                  <p className="label-id">Suffix</p>
+                </div>
+                <div className="grid grid-cols-4 p-0">
+                  {/* <p className='label-id-data'>{fname + " " + mname + " " + sname + " " + suffix}</p> */}
+                  <p className="label-id-data">
+                    {records.FirstName}
+                  </p>
+                  <p className="label-id-data">
+                    {records.MiddleName}
+                  </p>
+                  <p className="label-id-data">
+                    {records.Surname}
+                  </p>
+                  <p className="label-id-data">
+                    {records.Suffix}
+                  </p>
+                </div>
+                {/* <p className='label-id'>{fname + ' ' + mname + ' ' + sname + ' ' + suffix}</p> */}
+                {/* 2nd */}
+                <div className="flex flex-col p-0 gap-1 gap-y-0">
+                  <div className="grid grid-cols-3 p-0">
+                    <p className="label-id">Date of Birth</p>
+                    <p className="label-id">Civil Status</p>
+                    <p className="label-id">Nationality</p>
+                  </div>
+                  <div className="grid grid-cols-3 p-0">
+                    <p className="label-id-data">
+                      {records.DateOfBirth}
+                    </p>
+                    <p className="label-id-data">
+                      {records.CivilStatus}
+                    </p>
+                    <p className="label-id-data">
+                      {records.Nationality}
+                    </p>
+                  </div>
+                </div>
+                {/* 3rd */}
+                <div className="flex flex-col p-0 gap-0 gap-y-0">
+                  <div className="grid grid-cols-5 p-0">
+                    <p className="label-id col-span-2">
+                      Registration Number
+                    </p>
+                    <p className="label-id col-span-2">
+                      Precinct Number
+                    </p>
+                    <p className="label-id col-span-1">
+                      Valid Until
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-5 p-0">
+                    <p className="label-id-data col-span-2">
+                      {records.RegistrationNumber}
+                    </p>
+                    <p className="label-id-data col-span-2">
+                      {records.PrecinctNumber}
+                    </p>
+                    <p className="label-id-data col-span-1">
+                      {records.ValidUntil}
+                    </p>
+                  </div>
+                </div>
+                {/* 4rd */}
+                <div className="flex flex-col p-0 gap-1 gap-y-0">
+                  <p className="label-id">Address</p>
+                  <p className="label-id-data col-span-2">
+                    {records.Address}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function Component2() {
+    return (
+      <div>
+        {/*id back*/}
+        <div className="grid grid-cols-1 p-0" id="id-back">
+          <div
+            className={`${records.IDType === "Green Card"
+              ? "id-card-back border"
+              : records.IDType === "Yellow Card"
+                ? "id-card-back-yellow border"
+                : records.IDType === "White Card"
+                  ? "id-card-back-white border"
+                  : "id-card-back border"
+              } grid grid-rows-8 gap-0 p-0`}
+          ></div>
+        </div>
+      </div>
+    );
+  }
 
   const sigCanvas = useRef();
   const [sign, setSign] = useState("");
@@ -60,7 +257,7 @@ function ListOfIds() {
     try {
       updateUserDataSign(signID, sign, "Not Printed");
     } catch (e) {
-      MySwal.fire({
+      Swal.fire({
         title: <p>Error!</p>,
         text: e.message,
         icon: "error",
@@ -93,35 +290,26 @@ function ListOfIds() {
     });
   };
 
-  useEffect(() => {
-    window.onafterprint = () => {
-      if (isPrinted) {
-        Swal.fire({
-          title: "Printing",
-          text: "Printing is done.",
-          icon: "success",
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Ok",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Swal.fire("Saving Data", "Data save successfully.", "success");
-            window.location.reload();
-          }
-        });
-      } else {
-        Swal.fire({
-          title: "Printing",
-          text: "Printing was cancelled.",
-          icon: "error",
-        });
-        window.location.reload();
-      }
-      setIsPrinted(false);
-    };
-  }, [isPrinted]);
+  const handleAfterPrint = () => {
+    try {
+      updateUserDataIsPrinted(isPrintedID, "Printed");
+      setShowModal(false);
+      Swal.fire("Printed!", "Print Successfully.", "success");
+    } catch (e) {
+      Swal.fire({
+        title: <p>Error!</p>,
+        text: e.message,
+        icon: "error",
+      });
+    }
+  };
+
+  // useEffect(() => {
+  //   window.onafterprint = handleAfterPrint;
+  // }, []);
 
   const handleDownloadID = () => {
-    html2canvas(idCardRef.current).then((canvas) => {
+    html2canvas(componentRef1.current).then((canvas) => {
       const link = document.createElement("a");
       link.download = "id-card.png";
       link.href = canvas.toDataURL();
@@ -129,54 +317,24 @@ function ListOfIds() {
     });
   };
 
-  const handlePrintID = () => {
-    try {
-      updateUserDataIsPrinted(isPrintedID, "Printed");
-    } catch (e) {
-      MySwal.fire({
-        title: <p>Error!</p>,
-        text: e.message,
-        icon: "error",
-      });
-    }
-    html2canvas(idCardRef.current).then((canvas) => {
-      const printContent = document.querySelector(`#id-side`).innerHTML;
-      const originalContent = document.body.innerHTML;
-      document.body.innerHTML = printContent;
-      window.print();
-      document.body.innerHTML = originalContent;
-      // Use window.matchMedia to detect when the print dialog has been closed
-      const mediaQueryList = window.matchMedia('print');
-      mediaQueryList.addListener((mql) => {
-        if (!mql.matches) {
-          // The print dialog has been closed
-          try {
-            updateUserDataIsPrinted(isPrintedID, "Not Printed");
-            setTimeout(handleAfterPrint, 5000);
-          } catch (e) {
-            MySwal.fire({
-              title: <p>Error!</p>,
-              text: e.message,
-              icon: "error",
-            });
-          }
-        }
-      });
-    });
-  };
+  // const handlePrintID = () => {
+  //   html2canvas(idCardRef.current).then((canvas) => {
+  //     const printContent = document.querySelector(`#id-side`).innerHTML;
+  //     const originalContent = document.body.innerHTML;
+  //     document.body.innerHTML = printContent;
+  //     window.print();
+  //     document.body.innerHTML = originalContent;
+  //     setTimeout(handleClosePrint, 5000);
+  //   });
+  // };
 
-  // function onPrintCancel() {
-  //   Swal.fire("Print", "Print cancel.", "warning");
-  //   console.log(isPrintedID);
-  //   // Your code to execute after the print operation is completed
+  // const handleClosePrint = () => {
+  //   if (document.hidden) {
+  //     return;
+  //   }
+  //   window.location.reload();
+  //   // setIsPrinted(true);
   // }
-
-  function handleAfterPrint() {
-    if (document.hidden) {
-      return;
-    }
-    setIsPrinted(true);
-  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -637,192 +795,12 @@ function ListOfIds() {
                       {/*body*/}
                       <div className="relative p-6 flex-auto">
                         <div
-                          className="grid grid-cols-2 p-0 gap-4"
-                          ref={idCardRef}
+                          className="grid grid-row-2 p-0 gap-0"
+                          ref={componentRef1}
                           id="id-side"
                         >
-                          {/*id front*/}
-                          <div className="grid grid-cols-1 p-0" id="id-front">
-                            <div
-                              className={`${records.IDType === "Green Card"
-                                ? "id-card border"
-                                : records.IDType === "Yellow Card"
-                                  ? "id-card-yellow border"
-                                  : records.IDType === "White Card"
-                                    ? "id-card-white border"
-                                    : "id-card border"
-                                } grid grid-rows-8 gap-0 p-0`}
-                            >
-                              <div className="grid grid-cols-6 row-span-1 py-2">
-                                <img
-                                  className="blgu-logo col-span-1"
-                                  src={blguLogo}
-                                  alt=""
-                                />
-                                <div className="flex flex-col p-0 mt-1 col-span-5">
-                                  <span
-                                    className={`${records.IDType === "Green Card"
-                                      ? "text-hdr"
-                                      : records.IDType === "Yellow Card"
-                                        ? "text-hdr-black"
-                                        : records.IDType === "White Card"
-                                          ? "text-hdr-black"
-                                          : "text-hdr"
-                                      }`}
-                                  >
-                                    Republic of the Philippines
-                                  </span>
-                                  <span
-                                    className={`${records.IDType === "Green Card"
-                                      ? "text-hdr"
-                                      : records.IDType === "Yellow Card"
-                                        ? "text-hdr-black"
-                                        : records.IDType === "White Card"
-                                          ? "text-hdr-black"
-                                          : "text-hdr"
-                                      }`}
-                                  >
-                                    Province of Antique
-                                  </span>
-                                  <span
-                                    className={`${records.IDType === "Green Card"
-                                      ? "text-hdr"
-                                      : records.IDType === "Yellow Card"
-                                        ? "text-hdr-black"
-                                        : records.IDType === "White Card"
-                                          ? "text-hdr-black"
-                                          : "text-hdr"
-                                      }`}
-                                  >
-                                    Municipality of Caluya
-                                  </span>
-                                  <span
-                                    className={`${records.IDType === "Green Card"
-                                      ? "text-hdr"
-                                      : records.IDType === "Yellow Card"
-                                        ? "text-hdr-black"
-                                        : records.IDType === "White Card"
-                                          ? "text-hdr-black"
-                                          : "text-hdr"
-                                      }`}
-                                  >
-                                    BARANGAY SEMIRARA
-                                  </span>
-                                </div>
-                              </div>
-                              <h2 className="id-title row-span-2 mb-2">
-                                Barangay Identification Card
-                              </h2>
-                              <div className="grid grid-cols-12 row-span-5 p-0 px-5 gap-2">
-                                <div className="grid grid-rows-5 col-span-3 gap-2">
-                                  <div className="id-pic row-span-2">
-                                    <img
-                                      src={records.Photo}
-                                      alt=""
-                                      className="id-pic-user"
-                                    />
-                                  </div>
-                                  <div className="flex flex-col gap-y-1 row-span-4 items-center">
-                                    <img
-                                      src={records.SigniturePhoto}
-                                      alt=""
-                                      className="sign-user"
-                                    />
-                                    <p className="label-id">Signature</p>
-                                  </div>
-                                </div>
-
-                                <div className="flex flex-col p-0 px-2 gap-1 gap-y-0 col-span-9 ml-4">
-                                  <div className="grid grid-cols-4 p-0">
-                                    <p className="label-id">First Name</p>
-                                    <p className="label-id">Middle Name</p>
-                                    <p className="label-id">Surname</p>
-                                    <p className="label-id">Suffix</p>
-                                  </div>
-                                  <div className="grid grid-cols-4 p-0">
-                                    {/* <p className='label-id-data'>{fname + " " + mname + " " + sname + " " + suffix}</p> */}
-                                    <p className="label-id-data">
-                                      {records.FirstName}
-                                    </p>
-                                    <p className="label-id-data">
-                                      {records.MiddleName}
-                                    </p>
-                                    <p className="label-id-data">
-                                      {records.Surname}
-                                    </p>
-                                    <p className="label-id-data">
-                                      {records.Suffix}
-                                    </p>
-                                  </div>
-                                  {/* <p className='label-id'>{fname + ' ' + mname + ' ' + sname + ' ' + suffix}</p> */}
-                                  {/* 2nd */}
-                                  <div className="flex flex-col p-0 gap-1 gap-y-0">
-                                    <div className="grid grid-cols-3 p-0">
-                                      <p className="label-id">Date of Birth</p>
-                                      <p className="label-id">Civil Status</p>
-                                      <p className="label-id">Nationality</p>
-                                    </div>
-                                    <div className="grid grid-cols-3 p-0">
-                                      <p className="label-id-data">
-                                        {records.DateOfBirth}
-                                      </p>
-                                      <p className="label-id-data">
-                                        {records.CivilStatus}
-                                      </p>
-                                      <p className="label-id-data">
-                                        {records.Nationality}
-                                      </p>
-                                    </div>
-                                  </div>
-                                  {/* 3rd */}
-                                  <div className="flex flex-col p-0 gap-0 gap-y-0">
-                                    <div className="grid grid-cols-5 p-0">
-                                      <p className="label-id col-span-2">
-                                        Registration Number
-                                      </p>
-                                      <p className="label-id col-span-2">
-                                        Precinct Number
-                                      </p>
-                                      <p className="label-id col-span-1">
-                                        Valid Until
-                                      </p>
-                                    </div>
-                                    <div className="grid grid-cols-5 p-0">
-                                      <p className="label-id-data col-span-2">
-                                        {records.RegistrationNumber}
-                                      </p>
-                                      <p className="label-id-data col-span-2">
-                                        {records.PrecinctNumber}
-                                      </p>
-                                      <p className="label-id-data col-span-1">
-                                        {records.ValidUntil}
-                                      </p>
-                                    </div>
-                                  </div>
-                                  {/* 4rd */}
-                                  <div className="flex flex-col p-0 gap-1 gap-y-0">
-                                    <p className="label-id">Address</p>
-                                    <p className="label-id-data col-span-2">
-                                      {records.Address}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          {/*id back*/}
-                          <div className="grid grid-cols-1 p-0" id="id-back">
-                            <div
-                              className={`${records.IDType === "Green Card"
-                                ? "id-card-back border"
-                                : records.IDType === "Yellow Card"
-                                  ? "id-card-back-yellow border"
-                                  : records.IDType === "White Card"
-                                    ? "id-card-back-white border"
-                                    : "id-card-back border"
-                                } grid grid-rows-8 gap-0 p-0`}
-                            ></div>
-                          </div>
+                          <Component1 />
+                          <Component2 />
                         </div>
                       </div>
                       {/*footer*/}
@@ -843,13 +821,23 @@ function ListOfIds() {
                         >
                           Download
                         </button>
-                        <button
-                          className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                          type="button"
-                          onClick={handlePrintID}
-                        >
-                          Print
-                        </button>
+                        <ReactToPrint
+                          trigger={() => <button
+                            className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                            type="button"
+                          >
+                            Print
+                          </button>}
+                          content={() => componentRef1.current}
+                          documentTitle="Print ID"
+                          pageStyle="print"
+                          onAfterPrint={handleAfterPrint}
+                          onBeforeGetContent={() => {
+                            // This is optional, but can be used to force a re-render
+                            // of the components before they are printed
+                            return new Promise(resolve => setTimeout(resolve, 500));
+                          }}
+                        />
                       </div>
                     </div>
                   </div>

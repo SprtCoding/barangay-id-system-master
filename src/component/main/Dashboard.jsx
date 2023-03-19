@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import SideNavBar from "../../navbar/SideNavBar";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -31,7 +31,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import usbDetect from 'usb-detection';
+import ReactToPrint from 'react-to-print';
 
 const videoConstraints = {
   width: 400,
@@ -42,9 +42,7 @@ const videoConstraints = {
 function Dashboard() {
   const [openModal, setOpenModal] = useState(false);
 
-  const [isPrinted, setIsPrinted] = useState(false);
-
-  // const [isLoadingGenerate, setIsLoadingGenerate] = useState(false);
+  // const [isPrinted, setIsPrinted] = useState(false);
 
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
 
@@ -58,44 +56,57 @@ function Dashboard() {
     setOpenModal(true);
   };
 
-  const handlePrintID = () => {
-    html2canvas(idCardRef.current).then((canvas) => {
-      const printContent = document.querySelector(`#id-side`).innerHTML;
-      const originalContent = document.body.innerHTML;
-      document.body.innerHTML = printContent;
-      window.print();
-      document.body.innerHTML = originalContent;
-      setIsPrinted(true);
-      setTimeout(handleAfterPrint, 1000);
-    });
-  };
-
-  useEffect(() => {
-    window.onafterprint = () => {
-      if (isPrinted) {
-        Swal.fire({
-          title: "Printing",
-          text: "Printing is done.",
-          icon: "success",
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Ok",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Swal.fire("Saving Data", "Data save successfully.", "success");
-            window.location.reload();
-          }
-        });
-      } else {
-        Swal.fire({
-          title: "Printing",
-          text: "Printing was cancelled.",
-          icon: "error",
-        });
-        window.location.reload();
+  const handlePrintCancel = () => {
+    MySwal.fire({
+      title: <p>Saving</p>,
+      text: "Print Cancel",
+      icon: "info",
+    }).then((result) => {
+      if (result.value) {
+        setShowModal(false);
       }
-      setIsPrinted(false);
-    };
-  }, [isPrinted]);
+    });
+  }
+
+  const handleAfterPrint = () => {
+    try {
+      writeUserData(
+        regNo,
+        fname,
+        mname,
+        sname,
+        suffix,
+        cStat,
+        dateOfBirth.toLocaleDateString(),
+        regNo,
+        preNo,
+        validIDUntil.toLocaleDateString(),
+        nationality,
+        address,
+        idType,
+        picture,
+        sign,
+        "Printed"
+      );
+      MySwal.fire({
+        title: <p>Saving</p>,
+        text: "Data saved successful",
+        icon: "success",
+      }).then((result) => {
+        if (result.value) {
+          clearForm();
+          setShowModal(false);
+        }
+      });
+    } catch (e) {
+      setShowModal(false);
+      MySwal.fire({
+        title: <p>Error!</p>,
+        text: e.message,
+        icon: "error",
+      });
+    }
+  };
 
   const handleDownloadID = () => {
     html2canvas(idCardRef.current).then((canvas) => {
@@ -257,13 +268,6 @@ function Dashboard() {
       }
     }, 2000);
   };
-
-  function handleAfterPrint() {
-    if (document.hidden) {
-      return;
-    }
-    setIsPrinted(false);
-  }
 
   const { logout } = UserAuth();
   const navigate = useNavigate();
@@ -918,7 +922,7 @@ function Dashboard() {
                             {/*body*/}
                             <div className="relative p-6 flex-auto">
                               <div
-                                className="grid grid-cols-2 p-0 gap-4"
+                                className="grid grid-row-2 p-0 gap-0"
                                 ref={idCardRef}
                                 id="id-side"
                               >
@@ -1136,13 +1140,24 @@ function Dashboard() {
                               >
                                 Download
                               </button>
-                              <button
-                                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                type="button"
-                                onClick={handlePrintID}
-                              >
-                                Print
-                              </button>
+                              <ReactToPrint
+                                trigger={() => <button
+                                  className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                  type="button"
+                                >
+                                  Print
+                                </button>}
+                                content={() => idCardRef.current}
+                                documentTitle="Print ID"
+                                pageStyle="print"
+                                onAfterPrint={handleAfterPrint}
+                                onBeforePrint={handlePrintCancel}
+                                onBeforeGetContent={() => {
+                                  // This is optional, but can be used to force a re-render
+                                  // of the components before they are printed
+                                  return new Promise(resolve => setTimeout(resolve, 500));
+                                }}
+                              />
                             </div>
                           </div>
                         </div>
