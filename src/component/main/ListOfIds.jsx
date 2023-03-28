@@ -253,9 +253,16 @@ function ListOfIds() {
   const [sign, setSign] = useState("");
   const saveSign = () => {
     setSign(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"));
-    setOpenSignatureModal(false);
+    handleUpdateData();
+  };
+
+  const handleUpdateData = () => {
     try {
-      updateUserDataSign(signID, sign, "Not Printed");
+      if (sign !== "") {
+        updateUserDataSign(signID, sign, "Not Printed");
+        Swal.fire("Update!", "Signature added successfully.", "success");
+        setTimeout(setOpenSignatureModal(false), 2000);
+      }
     } catch (e) {
       Swal.fire({
         title: <p>Error!</p>,
@@ -263,7 +270,7 @@ function ListOfIds() {
         icon: "error",
       });
     }
-  };
+  }
 
   const clear = () => {
     sigCanvas.current.clear();
@@ -303,10 +310,6 @@ function ListOfIds() {
       });
     }
   };
-
-  // useEffect(() => {
-  //   window.onafterprint = handleAfterPrint;
-  // }, []);
 
   const handleDownloadID = () => {
     html2canvas(componentRef1.current).then((canvas) => {
@@ -466,7 +469,7 @@ function ListOfIds() {
                 </Typography>
                 <Divider />
                 <Box height={10} />
-                <Stack direction="row" spacing={2} className="my-2 mb-2">
+                <Stack direction="row" spacing={2} className="my-2 mb-2 mx-2">
                   <Autocomplete
                     disablePortal
                     id="combo-box-demo"
